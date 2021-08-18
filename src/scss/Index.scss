@@ -1,0 +1,10 @@
+// variables import
+@import "./variables.scss";
+// Components import
+@import "./Login.scss";
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
