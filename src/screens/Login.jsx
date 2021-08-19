@@ -1,13 +1,34 @@
 import React, { useState } from "react";
-import { InputGroup, FormControl, Button } from "react-bootstrap";
+// redux hooks
+import { useDispatch } from "react-redux";
+// redux actions
+import { setToken } from "../actions/authSlice";
 // hooks
 import { HandleInputs } from "../hooks/HandleInputs";
+// bootstrap components
+import { InputGroup, FormControl, Button, Alert } from "react-bootstrap";
+// router methods
+import { useHistory } from "react-router-dom/cjs/react-router-dom.min";
 
 const Login = () => {
+  const dispatch = useDispatch();
+  const history = useHistory();
+  // state that controls login error
+  const [loginError, setLoginError] = useState("");
+  // state where is store input values
   const [inputValues, setInputValues] = useState({
     email: "",
     password: "",
   });
+
+  // fucntion that control login
+  const handleLogin = () => {
+    if (inputValues.email === "admin" && inputValues.password === "admin") {
+      dispatch(setToken("tokenAgile"));
+    } else {
+      setLoginError("Email or Password is incorect");
+    }
+  };
 
   return (
     <>
@@ -18,13 +39,16 @@ const Login = () => {
             <InputGroup.Text
               id="basic-addon1"
               className="bg-primary text-white"
-              name="email"
-              value={inputValues.email}
-              onChange={(e) => HandleInputs(e, inputValues, setInputValues)}
             >
               Email
             </InputGroup.Text>
-            <FormControl placeholder="Email" aria-label="Email" />
+            <FormControl
+              placeholder="Email"
+              aria-label="Email"
+              name="email"
+              value={inputValues.email}
+              onChange={(e) => HandleInputs(e, inputValues, setInputValues)}
+            />
           </InputGroup>
           <InputGroup className="mb-3 w-25">
             <InputGroup.Text
@@ -37,13 +61,22 @@ const Login = () => {
               placeholder="Password"
               aria-label="Password"
               name="password"
+              type="password"
               value={inputValues.password}
               onChange={(e) => HandleInputs(e, inputValues, setInputValues)}
             />
           </InputGroup>
+          {/* alert for login error */}
+          {loginError && (
+            <Alert variant="danger" className="w-25">
+              Email or Password is incorect
+            </Alert>
+          )}
           <div className="w-25 d-flex justify-content-end">
-            <Button className="mr-3">LOGIN</Button>
-            <Button>REGISTER</Button>
+            <Button className="mr-3" onClick={() => handleLogin()}>
+              LOGIN
+            </Button>
+            <Button onClick={() => history.push("/register")}>REGISTER</Button>
           </div>
         </div>
       </div>
