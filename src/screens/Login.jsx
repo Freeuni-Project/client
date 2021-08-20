@@ -5,12 +5,9 @@ import { useDispatch } from "react-redux";
 import { setToken } from "../actions/authSlice";
 // hooks
 import { HandleInputs } from "../hooks/HandleInputs";
-// router methods
-import { useHistory } from "react-router-dom/cjs/react-router-dom.min";
 
 const Login = () => {
   const dispatch = useDispatch();
-  const history = useHistory();
   // state that controls login error
   const [loginError, setLoginError] = useState("");
   // state where is store input values

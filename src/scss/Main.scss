@@ -1,0 +1,13 @@
+/* CreateProjectCard */
+.card {
+  width: 15rem;
+  height: 8rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  font-size: $medium-font;
+  div {
+    cursor: pointer;
+  }
+}
