@@ -27,7 +27,6 @@ const Login = () => {
       setLoginError("Email or Password is incorect");
     }
   };
-  console.log(inputValues);
 
   return (
     <>
@@ -52,7 +51,7 @@ const Login = () => {
             />
             <div className="details">
               <div>
-                <input type="checkbox" name="logged" />
+                <input type="checkbox" name="logged" />{" "}
                 <label htmlFor="logged"> Keep me logged in</label>
               </div>
               <a href="#">Forgot Password</a>
@@ -62,7 +61,7 @@ const Login = () => {
             </button>
             <div className="borderline"></div>
             <div className="formbottom">
-              Don't have an account yet ? <a href="#">Sign Up</a>
+              Don't have an account yet ? <a href="/register">Sign Up</a>
             </div>
           </div>
         </div>

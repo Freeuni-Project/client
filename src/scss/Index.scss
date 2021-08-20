@@ -1,8 +1,10 @@
+@import "./custom.scss";
 // variables import
 @import "./variables.scss";
 // Components import
 @import "./Login.scss";
-
+@import "./Register.scss";
+@import "./MainNavbar.scss";
 * {
   margin: 0;
   padding: 0;
@@ -38,4 +40,19 @@
 .formbottom {
   margin-top: $small-margin;
   color: $main-gray;
+}
+.dropdown-toggle::after {
+  color: $main-color;
+}
+.dropdown-pull-right {
+  float: right !important;
+  right: 0;
+  left: auto;
+}
+.dropdown-toggle::after {
+  display: none;
+}
+.dropdown-pull-right > .dropdown-menu {
+  right: 0;
+  left: auto;
 }

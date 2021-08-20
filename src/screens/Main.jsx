@@ -3,6 +3,8 @@ import React from "react";
 import { useDispatch } from "react-redux";
 // redux action
 import { setToken } from "../actions/authSlice";
+// components
+import MainNavbar from "../components/MainNavbar.jsx";
 
 const Main = () => {
   const dispatch = useDispatch();
@@ -11,8 +13,7 @@ const Main = () => {
   };
   return (
     <div>
-      <h1>MAIN PAGE HERE</h1>
-      <button onClick={handleLogout}>Logout</button>
+      <MainNavbar />
     </div>
   );
 };

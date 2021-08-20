@@ -1,10 +1,9 @@
-// redux hooks
-import { useSelector } from "react-redux";
 // router methods
 import { Switch } from "react-router-dom";
 // custom  routes
 import PrivateRoute from "./routes/PrivateRoute.js";
 import PublicRoute from "./routes/PublicRoute.js";
+import ErrorRoute from "./routes/ErrorRoute.js";
 // components
 import Main from "./screens/Main.jsx";
 import Login from "./screens/Login.jsx";
@@ -22,6 +21,7 @@ function App() {
       <PublicRoute path="/register">
         <Register />
       </PublicRoute>
+      <ErrorRoute path="*" />
     </Switch>
   );
 }

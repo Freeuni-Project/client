@@ -3,12 +3,12 @@ import React, { useState } from "react";
 import { HandleInputs } from "../hooks/HandleInputs";
 // router methods
 import { useHistory } from "react-router-dom/cjs/react-router-dom.min";
-// boostrapt components
-import { InputGroup, FormControl, Button } from "react-bootstrap";
 
 const Register = () => {
   const history = useHistory();
   const [inputValues, setInputValues] = useState({
+    firstName: "",
+    lastName: "",
     email: "",
     userName: "",
     password: "",
@@ -17,74 +17,71 @@ const Register = () => {
 
   return (
     <>
-      <div className="loginscreen">
-        <div className="loginform w-100">
-          <h3 className="bg-primary text-white p-3 rounded">Register</h3>
-          <InputGroup className="mt-3 w-25">
-            <InputGroup.Text
-              id="basic-addon1"
-              className="bg-primary text-white"
-            >
-              Username
-            </InputGroup.Text>
-            <FormControl
+      <div className="registerscreen">
+        <div className="loginscreen__left">
+          <div className="container">
+            <h1>Register Now</h1>
+            <input
               placeholder="Username"
-              aria-label="Email"
+              className="input"
               name="userName"
               value={inputValues.userName}
               onChange={(e) => HandleInputs(e, inputValues, setInputValues)}
             />
-          </InputGroup>
-          <InputGroup className="mb-3 mt-3 w-25">
-            <InputGroup.Text
-              id="basic-addon1"
-              className="bg-primary text-white"
-            >
-              Email
-            </InputGroup.Text>
-            <FormControl
-              placeholder="Email"
-              aria-label="Email"
-              value={inputValues.email}
-              name="email"
+            <input
+              placeholder="Firstname"
+              className="input"
+              name="firstName"
+              value={inputValues.firstName}
               onChange={(e) => HandleInputs(e, inputValues, setInputValues)}
             />
-          </InputGroup>
-          <InputGroup className="mb-3 w-25">
-            <InputGroup.Text
-              id="basic-addon1"
-              className="bg-primary text-white"
-            >
-              Password
-            </InputGroup.Text>
-            <FormControl
+            <input
+              placeholder="Lastname"
+              className="input"
+              name="lastName"
+              value={inputValues.lastName}
+              onChange={(e) => HandleInputs(e, inputValues, setInputValues)}
+            />
+            <input
+              placeholder="Email"
+              className="input"
+              name="email"
+              value={inputValues.email}
+              onChange={(e) => HandleInputs(e, inputValues, setInputValues)}
+            />
+            <input
               placeholder="Password"
-              aria-label="Password"
+              type="password"
+              className="input"
               name="password"
               value={inputValues.password}
               onChange={(e) => HandleInputs(e, inputValues, setInputValues)}
             />
-          </InputGroup>
-          <InputGroup className="mb-3 w-25">
-            <InputGroup.Text
-              id="basic-addon1"
-              className="bg-primary text-white"
-            >
-              Repeat Password
-            </InputGroup.Text>
-            <FormControl
+            <input
               placeholder="Repeat Password"
-              aria-label="Password"
+              type="password"
+              className="input"
               name="repeatPassword"
               value={inputValues.repeatPassword}
               onChange={(e) => HandleInputs(e, inputValues, setInputValues)}
             />
-          </InputGroup>
-          <div className="w-25 d-flex justify-content-end">
-            <Button className="mr-3">REGISTER</Button>
-            <Button onClick={() => history.push("/login")}>LOGIN</Button>
+            <div className="details">
+              <a href="#"></a>
+              <div>
+                <input type="checkbox" name="logged" />{" "}
+                <label htmlFor="logged"> Keep me logged in</label>
+              </div>
+            </div>
+            <button className="button" onClick={() => console.log(inputValues)}>
+              Register
+            </button>
+            <div className="borderline"></div>
+            <div className="formbottom">
+              If you are already registered <a href="/login">Log In</a>
+            </div>
           </div>
         </div>
+        <div className="loginscreen__right"></div>
       </div>
     </>
   );
