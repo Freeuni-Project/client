@@ -5,8 +5,6 @@ import { useDispatch } from "react-redux";
 import { setToken } from "../actions/authSlice";
 // hooks
 import { HandleInputs } from "../hooks/HandleInputs";
-// bootstrap components
-import { InputGroup, FormControl, Button, Alert } from "react-bootstrap";
 // router methods
 import { useHistory } from "react-router-dom/cjs/react-router-dom.min";
 
@@ -29,56 +27,46 @@ const Login = () => {
       setLoginError("Email or Password is incorect");
     }
   };
+  console.log(inputValues);
 
   return (
     <>
       <div className="loginscreen">
-        <div className="loginform w-100">
-          <h3 className="bg-primary text-white p-3 rounded">LOGIN</h3>
-          <InputGroup className="mb-3 mt-3 w-25">
-            <InputGroup.Text
-              id="basic-addon1"
-              className="bg-primary text-white"
-            >
-              Email
-            </InputGroup.Text>
-            <FormControl
+        <div className="loginscreen__left">
+          <div className="container">
+            <h1>Welcome Back</h1>
+            <input
               placeholder="Email"
-              aria-label="Email"
+              className="input"
               name="email"
               value={inputValues.email}
               onChange={(e) => HandleInputs(e, inputValues, setInputValues)}
             />
-          </InputGroup>
-          <InputGroup className="mb-3 w-25">
-            <InputGroup.Text
-              id="basic-addon1"
-              className="bg-primary text-white"
-            >
-              Password
-            </InputGroup.Text>
-            <FormControl
+            <input
               placeholder="Password"
-              aria-label="Password"
-              name="password"
               type="password"
+              className="input"
+              name="password"
               value={inputValues.password}
               onChange={(e) => HandleInputs(e, inputValues, setInputValues)}
             />
-          </InputGroup>
-          {/* alert for login error */}
-          {loginError && (
-            <Alert variant="danger" className="w-25">
-              Email or Password is incorect
-            </Alert>
-          )}
-          <div className="w-25 d-flex justify-content-end">
-            <Button className="mr-3" onClick={() => handleLogin()}>
-              LOGIN
-            </Button>
-            <Button onClick={() => history.push("/register")}>REGISTER</Button>
+            <div className="details">
+              <div>
+                <input type="checkbox" name="logged" />
+                <label htmlFor="logged"> Keep me logged in</label>
+              </div>
+              <a href="#">Forgot Password</a>
+            </div>
+            <button className="button" onClick={handleLogin}>
+              Log In
+            </button>
+            <div className="borderline"></div>
+            <div className="formbottom">
+              Don't have an account yet ? <a href="#">Sign Up</a>
+            </div>
           </div>
         </div>
+        <div className="loginscreen__right"></div>
       </div>
     </>
   );

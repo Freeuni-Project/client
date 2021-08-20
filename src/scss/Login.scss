@@ -3,12 +3,34 @@
   height: 100vh;
   display: flex;
   align-items: center;
-  justify-content: center;
-  flex-direction: column;
-  .loginform {
+  justify-content: space-between;
+  &__left {
+    width: 50vw;
+    height: 100vh;
     display: flex;
+    flex-direction: column;
     align-items: center;
     justify-content: center;
-    flex-direction: column;
+    .container {
+      width: 28rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+      h1 {
+        font-size: $big-font;
+      }
+      .details {
+        width: 100%;
+        display: flex;
+        justify-content: space-between;
+        margin-top: $small-margin;
+      }
+    }
+  }
+  &__right {
+    width: 50vw;
+    height: 100vh;
+    background-color: $secondary-color;
   }
 }
