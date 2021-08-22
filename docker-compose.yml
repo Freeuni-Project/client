@@ -1,0 +1,23 @@
+# docker-compose.yml
+version: '3.8'
+
+networks:
+  micro_network:
+    external:
+      name: micro_network
+
+services:
+  frontend-app:
+    container_name: cfrontend-app
+    build:
+      context: .
+    volumes:
+      - './:/frontendapp'
+      - '/frontendapp/node_modules'
+    ports:
+    - "3000:3000"
+    networks:
+      - micro_network
+    environment:
+      - CHOKIDAR_USEPOLLING=true
+    restart: always
