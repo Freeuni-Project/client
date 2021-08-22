@@ -20,7 +20,7 @@ const Main = () => {
           {projects.map((project) => {
             return (
               <ProjectListCard
-                key={project.projectId}
+                key={project.id}
                 projectName={project.name}
                 projectId={project.id}
               />

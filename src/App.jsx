@@ -8,12 +8,16 @@ import ErrorRoute from "./routes/ErrorRoute.js";
 import Main from "./screens/Main.jsx";
 import Login from "./screens/Login.jsx";
 import Register from "./screens/Register.jsx";
+import CurrentProject from "./screens/CurrentProject.jsx";
 
 function App() {
   return (
     <Switch>
       <PrivateRoute path="/" exact>
         <Main />
+      </PrivateRoute>
+      <PrivateRoute path="/:id">
+        <CurrentProject />
       </PrivateRoute>
       <PublicRoute path="/login">
         <Login />
