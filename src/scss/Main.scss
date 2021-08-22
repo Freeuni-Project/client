@@ -5,8 +5,8 @@
   display: flex;
   justify-content: center;
   align-items: center;
-
   font-size: $medium-font;
+  margin: $small-margin;
   div {
     cursor: pointer;
   }
