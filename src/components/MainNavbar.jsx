@@ -19,10 +19,7 @@ const MainNavbar = () => {
         <Navbar.Brand href="/">Jira Free University</Navbar.Brand>
         <Navbar.Toggle aria-controls="responsive-navbar-nav" />
         <Navbar.Collapse id="responsive-navbar-nav">
-          <Nav className="me-auto">
-            <Nav.Link href="/projects">Projects</Nav.Link>
-            <Nav.Link href="/users">Users</Nav.Link>
-          </Nav>
+          <Nav className="me-auto"></Nav>
           <Nav>
             <NavDropdown
               className="dropdown-pull-right"
@@ -31,10 +28,7 @@ const MainNavbar = () => {
             >
               <NavDropdown.Item href="#action/3.1">Profile</NavDropdown.Item>
               <NavDropdown.Divider />
-              <NavDropdown.Item
-                href="#action/3.4"
-                onClick={() => dispatch(setToken(""))}
-              >
+              <NavDropdown.Item onClick={() => dispatch(setToken(""))}>
                 <div className="logoutcontainer">
                   <div className="logoutcontainer__item">Logout</div>
                   <BsBoxArrowInRight size={20} />

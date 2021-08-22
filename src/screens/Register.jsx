@@ -5,7 +5,6 @@ import { HandleInputs } from "../hooks/HandleInputs";
 import { useHistory } from "react-router-dom/cjs/react-router-dom.min";
 
 const Register = () => {
-  const history = useHistory();
   const [inputValues, setInputValues] = useState({
     firstName: "",
     lastName: "",

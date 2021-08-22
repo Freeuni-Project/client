@@ -16,15 +16,15 @@ function App() {
       <PrivateRoute path="/" exact>
         <Main />
       </PrivateRoute>
-      <PrivateRoute path="/:id">
-        <CurrentProject />
-      </PrivateRoute>
       <PublicRoute path="/login">
         <Login />
       </PublicRoute>
       <PublicRoute path="/register">
         <Register />
       </PublicRoute>
+      <PrivateRoute path="/project/:id">
+        <CurrentProject />
+      </PrivateRoute>
       <ErrorRoute path="*" />
     </Switch>
   );

@@ -1,0 +1,58 @@
+/* Current Project Screen */
+.currentproject {
+  width: 100vw;
+  padding: $medium-padding * 1.5;
+  display: flex;
+}
+/* SideBar */
+.currentnav {
+  width: 20%;
+  background-color: $secondary-color;
+  height: 100%;
+  box-shadow: 0px 3px 6px #00000029;
+  border-radius: $medium-radius;
+  display: flex;
+  flex-direction: column;
+  padding: $medium-padding;
+  &__title {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    padding-left: $medium-padding;
+    width: 100%;
+    border-radius: $medium-radius;
+    box-shadow: 0px 3px 6px #00000029;
+    cursor: pointer;
+    div {
+      font-size: $small-font-sec;
+    }
+    svg {
+      margin-right: $small-margin;
+      color: $main-color;
+      font-size: $small-font-sec;
+    }
+  }
+  &__item {
+    display: flex;
+    align-items: center;
+    padding-left: $medium-padding * 1.5;
+    cursor: pointer;
+    padding-top: $small-padding;
+    border-radius: $small-radius;
+    padding-bottom: $small-padding;
+
+    div {
+      font-size: $small-font;
+    }
+    svg {
+      margin-right: $small-margin;
+      font-size: $small-font-sec;
+    }
+  }
+  &__selected {
+    background-color: #ebebf0;
+  }
+  &__item:hover {
+    background-color: #ebebf0;
+  }
+}
