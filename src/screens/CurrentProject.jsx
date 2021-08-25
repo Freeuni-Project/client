@@ -4,7 +4,7 @@ import { useSelector } from "react-redux";
 // components
 import MainNavbar from "../components/MainNavbar";
 import SideBar from "../components/SideBar";
-import BackLog from "../components/BackLog";
+import BackLog from "../components/BackLog/BackLog.jsx";
 import Board from "../components/Board";
 
 const CurrentProject = ({ match }) => {

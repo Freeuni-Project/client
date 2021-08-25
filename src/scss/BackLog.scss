@@ -1,0 +1,87 @@
+.backlogbox {
+  width: 100%;
+  box-shadow: $main-shadow;
+  border-radius: $medium-radius;
+  margin-left: $small-margin;
+  padding: $medium-padding;
+  background-color: #f3f5f7;
+
+  /* Backlog Item */
+
+  .backlogitem {
+    width: 100%;
+    border-radius: $medium-radius;
+    padding: $small-padding;
+    padding-left: $medium-padding;
+    padding-right: $medium-padding;
+    background-color: #fff;
+    box-shadow: $main-shadow;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    transition: $main-transition;
+    margin-bottom: $small-margin/1.5;
+    &__status {
+      cursor: pointer;
+      padding-top: $small-padding/2;
+      padding-bottom: $small-padding/2;
+      padding-left: $small-padding;
+      padding-right: $small-padding;
+      border-radius: $small-radius;
+    }
+    /* statuses */
+    .done {
+      color: #006644;
+      background-color: #e3fcef;
+    }
+    .in-progress {
+      color: #1e46a0;
+      background-color: #e0ebfd;
+    }
+    .todo {
+      color: #dee1e5;
+      background-color: #45526d;
+    }
+    &__assigneeid {
+      border-radius: $medium-radius;
+      box-shadow: $main-shadow;
+      padding-top: $small-padding/2;
+      padding-bottom: $small-padding/2;
+      padding-left: $small-padding;
+      padding-right: $small-padding;
+      cursor: pointer;
+    }
+    &__description {
+      cursor: pointer;
+    }
+    &__title {
+      cursor: pointer;
+    }
+  }
+  .backlogitem:hover {
+    background-color: #fafbfc;
+  }
+
+  /* BackLog Create Button */
+
+  .backlogbutton {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    border-radius: $medium-radius;
+    padding: $small-padding;
+    padding-left: $medium-padding;
+    padding-right: $medium-padding;
+    color: #46516c;
+    text-align: center;
+    transition: $main-transition;
+    cursor: pointer;
+    svg {
+      font-weight: bold;
+      margin-right: $small-margin/2;
+    }
+  }
+  .backlogbutton:hover {
+    background-color: #e2e3e9;
+  }
+}
