@@ -22,13 +22,10 @@ const CreateProjectModal = () => {
   });
 
   const CreateProject = async () => {
-    const resp = await axios.post("http://localhost:5005/api/user/create", {
-      first_name: "niko",
-      last_name: "tskhvedadze",
-      userName: "niko",
-      email: "nikolozcxvedadze@gmail.com",
-      password: "password123",
-    });
+    const resp = await axios.get(
+      "http://localhost:5005/api/project/1/get-users",
+      inputValues
+    );
     console.log(resp);
   };
 

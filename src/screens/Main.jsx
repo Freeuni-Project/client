@@ -1,4 +1,5 @@
-import React from "react";
+import React, { useEffect } from "react";
+import axios from "axios";
 // components
 import MainNavbar from "../components/MainNavbar.jsx";
 import CreateProjectCard from "../components/CreateProjectCard.jsx";
@@ -11,6 +12,15 @@ const projects = [
 ];
 
 const Main = () => {
+  const GetProjects = async () => {
+    const resp = await axios.get("http://localhost:5005/api/projects");
+    console.log(resp);
+  };
+
+  useEffect(() => {
+    GetProjects();
+  }, []);
+
   return (
     <>
       <MainNavbar />
