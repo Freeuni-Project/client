@@ -25,7 +25,7 @@ const SideBar = () => {
         style={{ marginTop: "1rem" }}
         onClick={() => dispatch(setNavControl({ board: true, backlog: false }))}
       >
-        <VscCircuitBoard color={navData.board && "#2151c5"} />
+        <VscCircuitBoard color={navData.board ? "#2151c5" : ""} />
         <div>Board</div>
       </div>
       <div

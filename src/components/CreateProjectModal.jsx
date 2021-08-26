@@ -7,6 +7,8 @@ import { setCreateProject } from "../actions/globalSlice";
 import { Modal, Button } from "react-bootstrap";
 // custom hook to handle inputs
 import { HandleInputs } from "../hooks/HandleInputs";
+// import axios to create post request
+import axios from "axios";
 
 const CreateProjectModal = () => {
   const dispatch = useDispatch();
@@ -16,7 +18,19 @@ const CreateProjectModal = () => {
   const [inputValues, setInputValues] = useState({
     projectName: "",
     projectDescription: "",
+    status: "",
   });
+
+  const CreateProject = async () => {
+    const resp = await axios.post("http://localhost:5005/api/user/create", {
+      first_name: "niko",
+      last_name: "tskhvedadze",
+      userName: "niko",
+      email: "nikolozcxvedadze@gmail.com",
+      password: "password123",
+    });
+    console.log(resp);
+  };
 
   return (
     <Modal
@@ -36,6 +50,13 @@ const CreateProjectModal = () => {
           value={inputValues.projectName}
           onChange={(e) => HandleInputs(e, inputValues, setInputValues)}
         />
+        <input
+          className="input"
+          placeholder="Status"
+          name="status"
+          value={inputValues.status}
+          onChange={(e) => HandleInputs(e, inputValues, setInputValues)}
+        />
         <textarea
           className="input"
           placeholder="Project Description"
@@ -51,7 +72,7 @@ const CreateProjectModal = () => {
         >
           Close
         </Button>
-        <Button variant="primary" onClick={() => console.log(inputValues)}>
+        <Button variant="primary" onClick={() => CreateProject()}>
           Create Project
         </Button>
       </Modal.Footer>
