@@ -2,7 +2,7 @@ import React from "react";
 // redux hooks
 import { useDispatch } from "react-redux";
 // redux actions
-import { setCreateProject } from "../actions/globalSlice";
+import { setCreateProject } from "../../actions/globalSlice";
 
 const CreateProjectCard = () => {
   const dispatch = useDispatch();

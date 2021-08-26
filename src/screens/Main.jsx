@@ -1,20 +1,29 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import axios from "axios";
 // components
 import MainNavbar from "../components/MainNavbar.jsx";
-import CreateProjectCard from "../components/CreateProjectCard.jsx";
-import CreateProjectModal from "../components/CreateProjectModal.jsx";
+import CreateProjectCard from "../components/CreateProject/CreateProjectCard.jsx";
+import CreateProjectModal from "../components/CreateProject/CreateProjectModal.jsx";
 import ProjectListCard from "../components/ProjectListCard.jsx";
-
-const projects = [
-  { name: "Lomsa", id: "3123013131" },
-  { name: "SpaceX", id: "dsadasd231" },
-];
+import Loading from "../components/Loading.jsx";
+import InfoModal from "../components/InfoModal.jsx";
 
 const Main = () => {
+  // here we store projects from database
+  const [requestData, setRequestData] = useState({
+    data: [],
+    error: "",
+    loading: false,
+  });
+
   const GetProjects = async () => {
-    const resp = await axios.get("http://localhost:5005/api/projects");
-    console.log(resp);
+    try {
+      setRequestData({ ...requestData, loading: true });
+      const resp = await axios.get("http://localhost:5005/api/projects");
+      setRequestData({ ...requestData, data: resp.data, loading: false });
+    } catch (error) {
+      setRequestData({ ...requestData, loading: false, error: error });
+    }
   };
 
   useEffect(() => {
@@ -26,20 +35,32 @@ const Main = () => {
       <MainNavbar />
       <div className="container">
         <div className="projectsbox">
-          <CreateProjectCard />
-          {projects.map((project) => {
-            return (
-              <ProjectListCard
-                key={project.id}
-                projectName={project.name}
-                projectId={project.id}
-              />
-            );
-          })}
+          {requestData.loading ? (
+            <Loading />
+          ) : (
+            <>
+              <CreateProjectCard />
+              {requestData.data &&
+                requestData.data.map((project) => {
+                  return (
+                    <ProjectListCard
+                      key={project.id}
+                      projectName={project.project_name}
+                      projectId={project.id}
+                    />
+                  );
+                })}
+            </>
+          )}
         </div>
       </div>
       {/* Create New Project Modal */}
       <CreateProjectModal />
+      <InfoModal
+        title={{ message: "Something went wrong", type: "error" }}
+        show={requestData.error}
+        onClose={() => setRequestData({ data: [], error: "", loading: false })}
+      />
     </>
   );
 };
