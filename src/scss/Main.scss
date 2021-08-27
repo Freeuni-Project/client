@@ -6,7 +6,6 @@
   justify-content: center;
   align-items: center;
   font-size: $medium-font;
-  margin: $small-margin;
   div {
     cursor: pointer;
   }
@@ -15,7 +14,8 @@
 .projectsbox {
   display: grid;
   grid-template-columns: auto auto auto auto;
-
+  grid-row-gap: $small-margin * 2;
+  grid-column-gap: $small-margin * 2;
   margin-top: 1rem;
   flex-wrap: wrap;
   justify-content: center;

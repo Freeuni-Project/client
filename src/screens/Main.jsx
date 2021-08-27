@@ -66,13 +66,14 @@ const Main = () => {
             <>
               {active === 1 && <CreateProjectCard />}
               {requestData.data[active - 1] &&
-                requestData.data[active - 1].map((project) => {
+                requestData.data[active - 1].map((project, index) => {
                   return (
-                    <ProjectListCard
-                      key={project.id}
-                      projectName={project.project_name}
-                      projectId={project.id}
-                    />
+                    <React.Fragment key={project.id}>
+                      <ProjectListCard
+                        projectName={project.project_name}
+                        projectId={project.id}
+                      />
+                    </React.Fragment>
                   );
                 })}
             </>
