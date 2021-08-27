@@ -9,8 +9,10 @@ import { Navbar, Container, Nav, NavDropdown } from "react-bootstrap";
 import { BsBoxArrowInRight } from "react-icons/bs";
 // Flat Color Icons
 import { FcSettings } from "react-icons/fc";
+import { useHistory } from "react-router";
 
 const MainNavbar = () => {
+  const history = useHistory();
   const dispatch = useDispatch();
   const navDropdownIcon = <FcSettings size={30} />;
   return (
@@ -28,7 +30,12 @@ const MainNavbar = () => {
             >
               <NavDropdown.Item href="#action/3.1">Profile</NavDropdown.Item>
               <NavDropdown.Divider />
-              <NavDropdown.Item onClick={() => dispatch(setToken(""))}>
+              <NavDropdown.Item
+                onClick={() => {
+                  dispatch(setToken(""));
+                  history.push("/login");
+                }}
+              >
                 <div className="logoutcontainer">
                   <div className="logoutcontainer__item">Logout</div>
                   <BsBoxArrowInRight size={20} />

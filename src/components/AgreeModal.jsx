@@ -1,8 +1,8 @@
 import React from "react";
 // bootstrap elements
-import { Modal, Button } from "react-bootstrap";
+import { Modal, Button, Spinner } from "react-bootstrap";
 
-const AgreeModal = ({ title, agreeFunc, disagreeFunc, show }) => {
+const AgreeModal = ({ title, agreeFunc, disagreeFunc, show, loading }) => {
   return (
     <Modal show={show} centered onHide={disagreeFunc}>
       <Modal.Header closeButton>
@@ -12,9 +12,22 @@ const AgreeModal = ({ title, agreeFunc, disagreeFunc, show }) => {
         <Button variant="secondary" onClick={disagreeFunc}>
           No
         </Button>
-        <Button variant="primary" onClick={agreeFunc}>
-          Yes
-        </Button>
+        {loading ? (
+          <Button variant="primary" disabled>
+            <Spinner
+              as="span"
+              animation="border"
+              size="sm"
+              role="status"
+              aria-hidden="true"
+            />
+            Loading...
+          </Button>
+        ) : (
+          <Button variant="primary" onClick={agreeFunc}>
+            Yes
+          </Button>
+        )}
       </Modal.Footer>
     </Modal>
   );

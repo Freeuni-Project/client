@@ -8,35 +8,35 @@ import { VscProject, VscCircuitBoard, VscServer } from "react-icons/vsc";
 
 const SideBar = () => {
   const dispatch = useDispatch();
-  const navData = useSelector((state) => state.global.navControl);
+  const { navControl, currentProject } = useSelector((state) => state.global);
 
   return (
     <div className="currentnav">
       <div className="currentnav__title">
         <VscProject />
-        <div>LOMSA</div>
+        <div>{currentProject.project_name}</div>
       </div>
       <div
         className={
-          navData.board
+          navControl.board
             ? "currentnav__item currentnav__selected"
             : "currentnav__item"
         }
         style={{ marginTop: "1rem" }}
         onClick={() => dispatch(setNavControl({ board: true, backlog: false }))}
       >
-        <VscCircuitBoard color={navData.board ? "#2151c5" : ""} />
+        <VscCircuitBoard color={navControl.board ? "#2151c5" : ""} />
         <div>Board</div>
       </div>
       <div
         className={
-          navData.backlog
+          navControl.backlog
             ? "currentnav__item currentnav__selected"
             : "currentnav__item"
         }
         onClick={() => dispatch(setNavControl({ board: false, backlog: true }))}
       >
-        <VscServer color={navData.backlog && "#2151c5"} />
+        <VscServer color={navControl.backlog ? "#2151c5" : ""} />
         <div>Backlog</div>
       </div>
     </div>

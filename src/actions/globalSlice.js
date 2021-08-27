@@ -3,6 +3,7 @@ import { createSlice } from "@reduxjs/toolkit";
 const initialState = {
   createProject: { show: false },
   navControl: { board: false, backlog: true },
+  currentProject: {},
 };
 
 const globalSlice = createSlice({
@@ -16,9 +17,13 @@ const globalSlice = createSlice({
       state.navControl.backlog = action.payload.backlog;
       state.navControl.board = action.payload.board;
     },
+    setCurrentProject: (state, action) => {
+      state.currentProject = action.payload;
+    },
   },
 });
 
-export const { setCreateProject, setNavControl } = globalSlice.actions;
+export const { setCreateProject, setNavControl, setCurrentProject } =
+  globalSlice.actions;
 
 export default globalSlice.reducer;

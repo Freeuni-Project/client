@@ -22,9 +22,10 @@ function App() {
       <PublicRoute path="/register">
         <Register />
       </PublicRoute>
-      <PrivateRoute path="/project/:id">
-        <CurrentProject />
-      </PrivateRoute>
+      <PrivateRoute
+        path="/project/:id"
+        component={CurrentProject}
+      ></PrivateRoute>
       <ErrorRoute path="*" />
     </Switch>
   );

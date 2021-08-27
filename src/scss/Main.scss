@@ -10,13 +10,17 @@
     cursor: pointer;
   }
 }
+.contentwrapper {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+}
 
 .projectsbox {
   display: grid;
-  grid-template-columns: auto auto auto auto;
+  grid-template-columns: auto auto auto auto auto;
   grid-row-gap: $small-margin * 2;
   grid-column-gap: $small-margin * 2;
-  margin-top: 1rem;
-  flex-wrap: wrap;
+  margin-top: $small-margin;
   justify-content: center;
 }

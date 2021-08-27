@@ -7,47 +7,51 @@ import { setCreateProject } from "../../actions/globalSlice";
 import { Modal, Button } from "react-bootstrap";
 // custom hook to handle inputs
 import { HandleInputs } from "../../hooks/HandleInputs";
-// import axios to create post request
-import axios from "axios";
-// components
+/* axios base url */
+import base from "../../axios/axiosBase";
+/* modals */
 import AgreeModal from "../AgreeModal";
 import InfoModal from "../InfoModal";
 
-const CreateProjectModal = () => {
+const CreateProjectModal = ({ getProjects }) => {
   const dispatch = useDispatch();
-  // to controle agree modal
+  /* states */
   const [agreeModal, setAgreeModal] = useState(false);
-  // here is storeing post request information
   const [requestData, setRequestData] = useState({
-    error: "",
     success: "",
+    error: "",
     loading: false,
   });
-  // show modal state
-  const modalData = useSelector((state) => state.global.createProject);
-  // modal input values
   const [inputValues, setInputValues] = useState({
     projectName: "",
     projectDescription: "",
     status: "",
   });
+  /* redux states */
+  const modalData = useSelector((state) => state.global.createProject);
 
+  /* create new project function */
   const CreateProject = async () => {
     try {
       setRequestData({ ...requestData, loading: true });
-      const resp = await axios.post(
-        "http://localhost:5005/api/project/create",
-        {
-          project_name: inputValues.projectName,
-          description: inputValues.projectDescription,
-          status: inputValues.status,
-        }
-      );
+      const resp = await base.post("/project/create", {
+        project_name: inputValues.projectName,
+        description: inputValues.projectDescription,
+        status: inputValues.status,
+      });
+      // store fetched data
       setRequestData({
         ...requestData,
         loading: false,
         success: resp.data.message,
       });
+      // clean up inputs
+      setInputValues({
+        projectName: "",
+        projectDescription: "",
+        status: "",
+      });
+      getProjects();
     } catch (error) {
       setRequestData({ ...requestData, error: error.message, loading: false });
     }
@@ -64,7 +68,7 @@ const CreateProjectModal = () => {
         show={true}
         onClose={() => {
           setRequestData({ loading: false, error: "", success: "" });
-          dispatch(setCreateProject({ show: false }));
+          setAgreeModal(false);
         }}
       />
     );
@@ -81,36 +85,30 @@ const CreateProjectModal = () => {
           <Modal.Title>Create New Project</Modal.Title>
         </Modal.Header>
         <Modal.Body>
-          {requestData.loading ? (
-            <div className="text-center">
-              <div className="spinner-border" role="status"></div>
-            </div>
-          ) : (
-            <>
-              <input
-                className="input"
-                placeholder="Project Name"
-                style={{ marginTop: "0" }}
-                name="projectName"
-                value={inputValues.projectName}
-                onChange={(e) => HandleInputs(e, inputValues, setInputValues)}
-              />
-              <input
-                className="input"
-                placeholder="Status"
-                name="status"
-                value={inputValues.status}
-                onChange={(e) => HandleInputs(e, inputValues, setInputValues)}
-              />
-              <textarea
-                className="input"
-                placeholder="Project Description"
-                name="projectDescription"
-                value={inputValues.projectDescription}
-                onChange={(e) => HandleInputs(e, inputValues, setInputValues)}
-              />
-            </>
-          )}
+          <>
+            <input
+              className="input"
+              placeholder="Project Name"
+              style={{ marginTop: "0" }}
+              name="projectName"
+              value={inputValues.projectName}
+              onChange={(e) => HandleInputs(e, inputValues, setInputValues)}
+            />
+            <input
+              className="input"
+              placeholder="Status"
+              name="status"
+              value={inputValues.status}
+              onChange={(e) => HandleInputs(e, inputValues, setInputValues)}
+            />
+            <textarea
+              className="input"
+              placeholder="Project Description"
+              name="projectDescription"
+              value={inputValues.projectDescription}
+              onChange={(e) => HandleInputs(e, inputValues, setInputValues)}
+            />
+          </>
         </Modal.Body>
         <Modal.Footer>
           <Button
@@ -131,17 +129,16 @@ const CreateProjectModal = () => {
         </Modal.Footer>
       </Modal>
       <AgreeModal
+        title="Do you realy want to create new project ?"
         show={agreeModal}
         agreeFunc={() => {
           CreateProject();
-          setAgreeModal(false);
-          dispatch(setCreateProject({ show: true }));
         }}
         disagreeFunc={() => {
           setAgreeModal(false);
           dispatch(setCreateProject({ show: true }));
         }}
-        title="Do you realy want to create new project ?"
+        loading={requestData.loading}
       />
     </>
   );
