@@ -11,3 +11,12 @@
     cursor: pointer;
   }
 }
+
+.projectsbox {
+  display: grid;
+  grid-template-columns: auto auto auto auto;
+
+  margin-top: 1rem;
+  flex-wrap: wrap;
+  justify-content: center;
+}
