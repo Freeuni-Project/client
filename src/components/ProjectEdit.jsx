@@ -23,6 +23,12 @@ const ProjectEdit = ({ getProjects }) => {
     projectDescription: "",
     status: "",
   });
+  /* validation errors state */
+  const [validationError, setValidationError] = useState({
+    projectName: "",
+    projectDescription: "",
+    status: "",
+  });
   /* request data state */
   const [requestData, setRequestData] = useState({
     success: "",
@@ -48,6 +54,66 @@ const ProjectEdit = ({ getProjects }) => {
     } catch (error) {
       setRequestData({ ...requestData, loading: false, error: error });
     }
+  };
+
+  const handleValidation = () => {
+    let formIsValid = true;
+
+    if (inputValues.projectName.length < 5) {
+      formIsValid = false;
+      setValidationError((val) => {
+        return {
+          ...val,
+          projectName: "The project name must be 5 letters long",
+        };
+      });
+    } else {
+      setValidationError((val) => {
+        return {
+          ...val,
+          projectName: "",
+        };
+      });
+    }
+    if (inputValues.projectDescription.length < 10) {
+      formIsValid = false;
+      setValidationError((val) => {
+        return {
+          ...val,
+          projectDescription:
+            "The project description must be at last 10 letters long",
+        };
+      });
+    } else {
+      setValidationError((val) => {
+        return {
+          ...val,
+          projectDescription: "",
+        };
+      });
+    }
+    if (inputValues.status.length < 4) {
+      formIsValid = false;
+      setValidationError((val) => {
+        return {
+          ...val,
+          status: "The project status must be at last 4 letters long",
+        };
+      });
+    } else {
+      setValidationError((val) => {
+        return {
+          ...val,
+          status: "",
+        };
+      });
+    }
+    if (formIsValid) {
+      setAgreeModal(true);
+      dispatch(setProjectShow(false));
+    }
+
+    return formIsValid;
   };
 
   useEffect(() => {
@@ -95,6 +161,9 @@ const ProjectEdit = ({ getProjects }) => {
               value={inputValues.projectName}
               onChange={(e) => HandleInputs(e, inputValues, setInputValues)}
             />
+            {validationError.projectName && (
+              <div className="validation">{validationError.projectName}</div>
+            )}
             <input
               className="input"
               placeholder="Status"
@@ -102,6 +171,9 @@ const ProjectEdit = ({ getProjects }) => {
               value={inputValues.status}
               onChange={(e) => HandleInputs(e, inputValues, setInputValues)}
             />
+            {validationError.status && (
+              <div className="validation">{validationError.status}</div>
+            )}
             <textarea
               className="input"
               placeholder="Project Description"
@@ -109,6 +181,11 @@ const ProjectEdit = ({ getProjects }) => {
               value={inputValues.projectDescription}
               onChange={(e) => HandleInputs(e, inputValues, setInputValues)}
             />
+            {validationError.projectDescription && (
+              <div className="validation">
+                {validationError.projectDescription}
+              </div>
+            )}
           </>
           <Modal.Footer>
             <Button
@@ -120,8 +197,7 @@ const ProjectEdit = ({ getProjects }) => {
             <Button
               variant="primary"
               onClick={() => {
-                setAgreeModal(true);
-                dispatch(setProjectShow(false));
+                handleValidation();
               }}
             >
               Edit Project
