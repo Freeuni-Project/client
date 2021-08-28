@@ -1,6 +1,8 @@
 import React, { useState } from "react";
-// redux hooks
-import { useDispatch } from "react-redux";
+/* axios base url */
+import base from "../axios/axiosBase";
+/* redux hooks */
+import { useDispatch, useSelector } from "react-redux";
 // redux actions
 import { setToken } from "../actions/authSlice";
 // hooks
@@ -8,21 +10,64 @@ import { HandleInputs } from "../hooks/HandleInputs";
 
 const Login = () => {
   const dispatch = useDispatch();
-  // state that controls login error
-  const [loginError, setLoginError] = useState("");
-  // state where is store input values
-  const [inputValues, setInputValues] = useState({
-    email: "",
+  /* states */
+  const [validationError, setValidationError] = useState({
+    username: "",
     password: "",
   });
+  const [inputValues, setInputValues] = useState({
+    username: "",
+    password: "",
+  });
+  /* redux states */
+  const registerData = useSelector((state) => state.global.registerData);
 
-  // fucntion that control login
-  const handleLogin = () => {
-    if (inputValues.email === "admin" && inputValues.password === "admin") {
-      dispatch(setToken("tokenAgile"));
-    } else {
-      setLoginError("Email or Password is incorect");
+  /* login function */
+  const handleLogin = async () => {
+    const formIsValid = handleValidation();
+    if (formIsValid) {
+      if (
+        inputValues.username === "administrator" &&
+        inputValues.password === "administrator"
+      ) {
+        dispatch(setToken({ token: "tokenadmin", role: "admin" }));
+      } else {
+        try {
+          const resp = await base.post("/user/login", {
+            username: inputValues.username,
+            password: inputValues.password,
+          });
+          dispatch(setToken({ token: resp.data.api_key, role: "member" }));
+        } catch (error) {
+          console.error(error);
+        }
+      }
     }
+  };
+
+  const handleValidation = () => {
+    let formIsValid = true;
+    if (inputValues.username.length < 6) {
+      formIsValid = false;
+      setValidationError((val) => {
+        return { ...val, username: "User name must be 6 character long" };
+      });
+    } else {
+      setValidationError((val) => {
+        return { ...val, username: "" };
+      });
+    }
+    if (inputValues.password.length < 6) {
+      formIsValid = false;
+      setValidationError((val) => {
+        return { ...val, password: "Password name must be 6 character long" };
+      });
+    } else {
+      setValidationError((val) => {
+        return { ...val, password: "" };
+      });
+    }
+    return formIsValid;
   };
 
   return (
@@ -31,13 +76,21 @@ const Login = () => {
         <div className="loginscreen__left">
           <div className="container">
             <h1>Welcome Back</h1>
+            <h5>
+              {registerData &&
+                registerData.message &&
+                `User  ${registerData.result.username} registered`}
+            </h5>
             <input
-              placeholder="Email"
+              placeholder="Username"
               className="input"
-              name="email"
-              value={inputValues.email}
+              name="username"
+              value={inputValues.username}
               onChange={(e) => HandleInputs(e, inputValues, setInputValues)}
             />
+            {validationError.username && (
+              <div className="validation">{validationError.username}</div>
+            )}
             <input
               placeholder="Password"
               type="password"
@@ -46,6 +99,9 @@ const Login = () => {
               value={inputValues.password}
               onChange={(e) => HandleInputs(e, inputValues, setInputValues)}
             />
+            {validationError.password && (
+              <div className="validation">{validationError.password}</div>
+            )}
             <div className="details">
               <div>
                 <input type="checkbox" name="logged" />{" "}

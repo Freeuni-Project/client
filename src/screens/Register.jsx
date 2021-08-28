@@ -1,15 +1,27 @@
 import React, { useState } from "react";
 /* axios base url */
 import base from "../axios/axiosBase";
+/* redux hooks */
+import { useDispatch } from "react-redux";
+/* redux actions */
+import { setRegisterData } from "../actions/globalSlice";
 /* hooks */
 import { HandleInputs } from "../hooks/HandleInputs";
 import { ValidateEmail } from "../hooks/ValidateEmail";
 import { useHistory } from "react-router";
 
 const Register = () => {
+  const dispatch = useDispatch();
   const history = useHistory();
   /* states */
-  const [validationError, setValidationError] = useState({});
+  const [validationError, setValidationError] = useState({
+    firstName: "",
+    lastName: "",
+    email: "",
+    userName: "",
+    password: "",
+    repeatPassword: "",
+  });
 
   const [inputValues, setInputValues] = useState({
     firstName: "",
@@ -32,6 +44,7 @@ const Register = () => {
         password: inputValues.password,
       });
       if (resp.data.message === "User added") {
+        dispatch(setRegisterData(resp.data));
         history.push("/login");
       }
     }

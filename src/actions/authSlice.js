@@ -4,6 +4,7 @@ const token = localStorage.getItem("token-short");
 
 const initialState = {
   token: token ? token : "",
+  role: "",
 };
 
 export const authSlice = createSlice({
@@ -12,10 +13,12 @@ export const authSlice = createSlice({
   reducers: {
     setToken: (state, action) => {
       localStorage.setItem("token-short", action.payload);
-      state.token = action.payload;
+      state.token = action.payload.token;
+      state.role = action.payload.role;
     },
     removeToken: (state) => {
       state.token = "";
+      state.role = "";
     },
   },
 });
