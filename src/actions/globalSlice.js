@@ -5,6 +5,7 @@ const initialState = {
   currentProject: {},
   createProject: { show: false },
   navControl: { board: false, backlog: true },
+  projectEdit: { show: false, project: {} },
 };
 
 const globalSlice = createSlice({
@@ -24,6 +25,10 @@ const globalSlice = createSlice({
     setRegisterData: (state, action) => {
       state.registerData = action.payload;
     },
+    setProjectEdit: (state, action) => {
+      state.projectEdit.show = action.payload.show;
+      state.projectEdit.project = action.payload.project;
+    },
   },
 });
 
@@ -32,6 +37,7 @@ export const {
   setNavControl,
   setCurrentProject,
   setRegisterData,
+  setProjectEdit,
 } = globalSlice.actions;
 
 export default globalSlice.reducer;

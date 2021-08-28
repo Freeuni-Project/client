@@ -9,18 +9,21 @@ import { ContextMenu, MenuItem, ContextMenuTrigger } from "react-contextmenu";
 import AgreeModal from "./AgreeModal";
 /* redux hooks */
 import { useDispatch } from "react-redux";
+/* redux action */
+import { setProjectEdit } from "../actions/globalSlice";
 
 const ProjectListCard = ({ getProjects, project }) => {
   const dispatch = useDispatch();
   /* project destruction to use easly */
   const { project_name, id } = project;
   /* states */
+  const [deleteAgreeModal, setDeleteAgreeModal] = useState(false);
   const [requestData, setRequestData] = useState({
     success: "",
     error: "",
     loading: false,
   });
-  const [deleteAgreeModal, setDeleteAgreeModal] = useState(false);
+
   /* delete project from here */
   const deleteProject = async () => {
     try {
@@ -47,7 +50,13 @@ const ProjectListCard = ({ getProjects, project }) => {
       </ContextMenuTrigger>
       <ContextMenu id={project_name}>
         <MenuItem>Add Member</MenuItem>
-        <MenuItem>Edit Project</MenuItem>
+        <MenuItem
+          onClick={() =>
+            dispatch(setProjectEdit({ show: true, project: project }))
+          }
+        >
+          Edit Project
+        </MenuItem>
         <MenuItem divider />
         <MenuItem onClick={() => setDeleteAgreeModal(true)}>Delete</MenuItem>
       </ContextMenu>

@@ -17,11 +17,19 @@ const CreateProjectModal = ({ getProjects }) => {
   const dispatch = useDispatch();
   /* states */
   const [agreeModal, setAgreeModal] = useState(false);
+  /* validation errors state */
+  const [validationError, setValidationError] = useState({
+    projectName: "",
+    projectDescription: "",
+    status: "",
+  });
+  /* request data state */
   const [requestData, setRequestData] = useState({
     success: "",
     error: "",
     loading: false,
   });
+  /* input values state */
   const [inputValues, setInputValues] = useState({
     projectName: "",
     projectDescription: "",
@@ -53,8 +61,72 @@ const CreateProjectModal = ({ getProjects }) => {
       });
       getProjects();
     } catch (error) {
-      setRequestData({ ...requestData, error: error.message, loading: false });
+      setRequestData({
+        ...requestData,
+        error: error.message,
+        loading: false,
+      });
     }
+  };
+
+  const handleValidation = () => {
+    let formIsValid = true;
+
+    if (inputValues.projectName.length < 5) {
+      formIsValid = false;
+      setValidationError((val) => {
+        return {
+          ...val,
+          projectName: "The project name must be 5 letters long",
+        };
+      });
+    } else {
+      setValidationError((val) => {
+        return {
+          ...val,
+          projectName: "",
+        };
+      });
+    }
+    if (inputValues.projectDescription.length < 10) {
+      formIsValid = false;
+      setValidationError((val) => {
+        return {
+          ...val,
+          projectDescription:
+            "The project description must be at last 10 letters long",
+        };
+      });
+    } else {
+      setValidationError((val) => {
+        return {
+          ...val,
+          projectDescription: "",
+        };
+      });
+    }
+    if (inputValues.status.length < 4) {
+      formIsValid = false;
+      setValidationError((val) => {
+        return {
+          ...val,
+          status: "The project status must be at last 4 letters long",
+        };
+      });
+    } else {
+      setValidationError((val) => {
+        return {
+          ...val,
+          status: "",
+        };
+      });
+    }
+    if (formIsValid) {
+      setAgreeModal(true);
+      dispatch(setCreateProject({ show: false }));
+    }
+
+    return formIsValid;
   };
 
   if (requestData.error || requestData.success) {
@@ -94,6 +166,9 @@ const CreateProjectModal = ({ getProjects }) => {
               value={inputValues.projectName}
               onChange={(e) => HandleInputs(e, inputValues, setInputValues)}
             />
+            {validationError.projectName && (
+              <div className="validation">{validationError.projectName}</div>
+            )}
             <input
               className="input"
               placeholder="Status"
@@ -101,6 +176,9 @@ const CreateProjectModal = ({ getProjects }) => {
               value={inputValues.status}
               onChange={(e) => HandleInputs(e, inputValues, setInputValues)}
             />
+            {validationError.status && (
+              <div className="validation">{validationError.status}</div>
+            )}
             <textarea
               className="input"
               placeholder="Project Description"
@@ -108,6 +186,11 @@ const CreateProjectModal = ({ getProjects }) => {
               value={inputValues.projectDescription}
               onChange={(e) => HandleInputs(e, inputValues, setInputValues)}
             />
+            {validationError.projectDescription && (
+              <div className="validation">
+                {validationError.projectDescription}
+              </div>
+            )}
           </>
         </Modal.Body>
         <Modal.Footer>
@@ -120,8 +203,7 @@ const CreateProjectModal = ({ getProjects }) => {
           <Button
             variant="primary"
             onClick={() => {
-              setAgreeModal(true);
-              dispatch(setCreateProject({ show: false }));
+              handleValidation();
             }}
           >
             Create Project

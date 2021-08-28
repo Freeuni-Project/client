@@ -11,6 +11,7 @@ import CreateProjectModal from "../components/CreateProject/CreateProjectModal.j
 import ProjectListCard from "../components/ProjectListCard.jsx";
 import Loading from "../components/Loading.jsx";
 import InfoModal from "../components/InfoModal.jsx";
+import ProjectEdit from "../components/ProjectEdit.jsx";
 
 const Main = () => {
   /* states */
@@ -80,8 +81,6 @@ const Main = () => {
           )}
         </div>
       </div>
-      {/* Create New Project Modal */}
-      <CreateProjectModal getProjects={getProjects} />
       <InfoModal
         title={{ message: "Something went wrong", type: "error" }}
         show={requestData.error}
@@ -90,6 +89,9 @@ const Main = () => {
       <div className="mainpagination">
         <Pagination>{items}</Pagination>
       </div>
+      {/* Create New Project Modal */}
+      <CreateProjectModal getProjects={getProjects} />
+      <ProjectEdit getProjects={getProjects} />
     </>
   );
 };
