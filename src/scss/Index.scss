@@ -21,7 +21,11 @@
   padding: $small-padding;
   outline-color: $main-color;
 }
-
+.validation {
+  width: 100%;
+  font-size: $small-font;
+  color: #dc3545;
+}
 .button {
   width: 100%;
   margin-top: $small-margin;

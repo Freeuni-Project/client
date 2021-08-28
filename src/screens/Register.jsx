@@ -1,10 +1,16 @@
 import React, { useState } from "react";
-// hooks
+/* axios base url */
+import base from "../axios/axiosBase";
+/* hooks */
 import { HandleInputs } from "../hooks/HandleInputs";
-// router methods
-import { useHistory } from "react-router-dom/cjs/react-router-dom.min";
+import { ValidateEmail } from "../hooks/ValidateEmail";
+import { useHistory } from "react-router";
 
 const Register = () => {
+  const history = useHistory();
+  /* states */
+  const [validationError, setValidationError] = useState({});
+
   const [inputValues, setInputValues] = useState({
     firstName: "",
     lastName: "",
@@ -13,6 +19,90 @@ const Register = () => {
     password: "",
     repeatPassword: "",
   });
+
+  const registration = async () => {
+    const formIsValid = handleValidation();
+
+    if (formIsValid) {
+      const resp = await base.post("/user/create", {
+        first_name: inputValues.firstName,
+        last_name: inputValues.lastName,
+        email: inputValues.email,
+        username: inputValues.userName,
+        password: inputValues.password,
+      });
+      if (resp.data.message === "User added") {
+        history.push("/login");
+      }
+    }
+  };
+
+  /* validation function */
+  const handleValidation = () => {
+    let formIsValid = true;
+
+    if (inputValues.userName.length < 6) {
+      formIsValid = false;
+      setValidationError((val) => {
+        return { ...val, userName: "The username must be 6 letters long" };
+      });
+    } else {
+      setValidationError((val) => {
+        return { ...val, userName: "" };
+      });
+    }
+    if (inputValues.firstName.length < 2) {
+      formIsValid = false;
+      setValidationError((val) => {
+        return { ...val, firstName: "The Firstname must be 2 letters long" };
+      });
+    } else {
+      setValidationError((val) => {
+        return { ...val, firstName: "" };
+      });
+    }
+    if (inputValues.lastName.length < 2) {
+      formIsValid = false;
+      setValidationError((val) => {
+        return { ...val, lastName: "The lastName must be 2 letters long" };
+      });
+    } else {
+      setValidationError((val) => {
+        return { ...val, lastName: "" };
+      });
+    }
+    /* email validation */
+    const validateEmail = ValidateEmail(inputValues.email);
+    if (validateEmail) {
+      setValidationError((val) => {
+        return { ...val, email: "" };
+      });
+    }
+    if (!validateEmail) {
+      formIsValid = false;
+      setValidationError((val) => {
+        return { ...val, email: "Email must be valid" };
+      });
+    }
+    if (inputValues.password.length < 6) {
+      setValidationError((val) => {
+        return { ...val, password: "The Password must be 6 letters long" };
+      });
+    }
+
+    /* password validation */
+    if (inputValues.password !== inputValues.repeatPassword) {
+      setValidationError((val) => {
+        return { ...val, passwordRepeat: "Passwords must be same" };
+      });
+    } else {
+      setValidationError((val) => {
+        return { ...val, passwordRepeat: "" };
+      });
+    }
+
+    return formIsValid;
+  };
 
   return (
     <>
@@ -25,29 +115,49 @@ const Register = () => {
               className="input"
               name="userName"
               value={inputValues.userName}
-              onChange={(e) => HandleInputs(e, inputValues, setInputValues)}
+              onChange={(e) => {
+                HandleInputs(e, inputValues, setInputValues);
+              }}
             />
+            {validationError.userName && (
+              <div className="validation">{validationError.userName}</div>
+            )}
             <input
               placeholder="Firstname"
               className="input"
               name="firstName"
               value={inputValues.firstName}
-              onChange={(e) => HandleInputs(e, inputValues, setInputValues)}
+              onChange={(e) => {
+                HandleInputs(e, inputValues, setInputValues);
+              }}
             />
+            {validationError.firstName && (
+              <div className="validation">{validationError.firstName}</div>
+            )}
             <input
               placeholder="Lastname"
               className="input"
               name="lastName"
               value={inputValues.lastName}
-              onChange={(e) => HandleInputs(e, inputValues, setInputValues)}
+              onChange={(e) => {
+                HandleInputs(e, inputValues, setInputValues);
+              }}
             />
+            {validationError.lastName && (
+              <div className="validation">{validationError.lastName}</div>
+            )}
             <input
               placeholder="Email"
               className="input"
               name="email"
               value={inputValues.email}
-              onChange={(e) => HandleInputs(e, inputValues, setInputValues)}
+              onChange={(e) => {
+                HandleInputs(e, inputValues, setInputValues);
+              }}
             />
+            {validationError.email && (
+              <div className="validation">{validationError.email}</div>
+            )}
             <input
               placeholder="Password"
               type="password"
@@ -56,6 +166,9 @@ const Register = () => {
               value={inputValues.password}
               onChange={(e) => HandleInputs(e, inputValues, setInputValues)}
             />
+            {validationError.password && (
+              <div className="validation">{validationError.password}</div>
+            )}
             <input
               placeholder="Repeat Password"
               type="password"
@@ -64,14 +177,10 @@ const Register = () => {
               value={inputValues.repeatPassword}
               onChange={(e) => HandleInputs(e, inputValues, setInputValues)}
             />
-            <div className="details">
-              <a href="#"></a>
-              <div>
-                <input type="checkbox" name="logged" />{" "}
-                <label htmlFor="logged"> Keep me logged in</label>
-              </div>
-            </div>
-            <button className="button" onClick={() => console.log(inputValues)}>
+            {validationError.passwordRepeat && (
+              <div className="validation">{validationError.passwordRepeat}</div>
+            )}
+            <button className="button" onClick={() => registration()}>
               Register
             </button>
             <div className="borderline"></div>
