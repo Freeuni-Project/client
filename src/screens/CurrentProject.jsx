@@ -5,12 +5,16 @@ import base from "../axios/axiosBase";
 import { useSelector, useDispatch } from "react-redux";
 /* redux actions */
 import { setCurrentProject } from "../actions/globalSlice";
+import { setProjectUsers } from "../actions/currentProjectSlice";
 /* components */
 import MainNavbar from "../components/MainNavbar";
 import SideBar from "../components/SideBar";
 import BackLog from "../components/BackLog/BackLog.jsx";
 import Board from "../components/Board";
 import Loading from "../components/Loading";
+/* modals */
+import InfoModal from "../components/InfoModal";
+import AddTicket from "../components/addTicket";
 
 const CurrentProject = ({ match }) => {
   const dispatch = useDispatch();
@@ -18,6 +22,11 @@ const CurrentProject = ({ match }) => {
   const { navControl } = useSelector((state) => state.global);
 
   /* state */
+  const [usersRequestData, setUsersRequestData] = useState({
+    data: "",
+    error: "",
+    loading: false,
+  });
   const [requestData, setRequestData] = useState({
     data: "",
     error: "",
@@ -37,8 +46,24 @@ const CurrentProject = ({ match }) => {
     }
   };
 
+  const getCurrentUsers = async () => {
+    setUsersRequestData({ ...usersRequestData, loading: true });
+    try {
+      const resp = await base.get(`/project/${match.params.id}/get-users`);
+      setUsersRequestData({
+        ...usersRequestData,
+        loading: false,
+        data: resp.data.json_list,
+      });
+      dispatch(setProjectUsers(resp.data.json_list));
+    } catch (error) {
+      setUsersRequestData({ ...usersRequestData, loading: true, error: error });
+    }
+  };
+
   useEffect(() => {
     getCurrentProject();
+    getCurrentUsers();
   }, []);
 
   return (
@@ -55,6 +80,21 @@ const CurrentProject = ({ match }) => {
           </div>
         </>
       )}
+      <InfoModal
+        show={requestData.error}
+        title={{ type: "error", message: "something went wrong" }}
+        onClose={() => {
+          setRequestData({ data: "", error: "", loading: false });
+        }}
+      />
+      <InfoModal
+        show={usersRequestData.error}
+        title={{ type: "error", message: "something went wrong" }}
+        onClose={() => {
+          setUsersRequestData({ data: "", error: "", loading: false });
+        }}
+      />
+      <AddTicket />
     </>
   );
 };
