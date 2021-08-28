@@ -6,6 +6,8 @@ const initialState = {
   createProject: { show: false },
   navControl: { board: false, backlog: true },
   projectEdit: { show: false, project: {} },
+  allUsers: [],
+  addMember: { show: false, data: {} },
 };
 
 const globalSlice = createSlice({
@@ -25,9 +27,20 @@ const globalSlice = createSlice({
     setRegisterData: (state, action) => {
       state.registerData = action.payload;
     },
-    setProjectEdit: (state, action) => {
-      state.projectEdit.show = action.payload.show;
-      state.projectEdit.project = action.payload.project;
+    setProjectShow: (state, action) => {
+      state.projectEdit.show = action.payload;
+    },
+    setProjectData: (state, action) => {
+      state.projectEdit.project = action.payload;
+    },
+    setAllUsers: (state, action) => {
+      state.allUsers = action.payload;
+    },
+    setAddMemberShow: (state) => {
+      state.addMember.show = !state.addMember.show;
+    },
+    setAddMemberData: (state, action) => {
+      state.addMember.data = action.payload;
     },
   },
 });
@@ -37,7 +50,14 @@ export const {
   setNavControl,
   setCurrentProject,
   setRegisterData,
-  setProjectEdit,
+  // edit project
+  setProjectShow,
+  setProjectData,
+  // all users
+  setAllUsers,
+  // add member
+  setAddMemberShow,
+  setAddMemberData,
 } = globalSlice.actions;
 
 export default globalSlice.reducer;

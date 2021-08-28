@@ -10,7 +10,12 @@ import AgreeModal from "./AgreeModal";
 /* redux hooks */
 import { useDispatch } from "react-redux";
 /* redux action */
-import { setProjectEdit } from "../actions/globalSlice";
+import {
+  setProjectData,
+  setProjectShow,
+  setAddMemberShow,
+  setAddMemberData,
+} from "../actions/globalSlice";
 
 const ProjectListCard = ({ getProjects, project }) => {
   const dispatch = useDispatch();
@@ -49,11 +54,19 @@ const ProjectListCard = ({ getProjects, project }) => {
         </div>
       </ContextMenuTrigger>
       <ContextMenu id={project_name}>
-        <MenuItem>Add Member</MenuItem>
         <MenuItem
-          onClick={() =>
-            dispatch(setProjectEdit({ show: true, project: project }))
-          }
+          onClick={() => {
+            dispatch(setAddMemberShow());
+            dispatch(setAddMemberData({ id }));
+          }}
+        >
+          Add Member
+        </MenuItem>
+        <MenuItem
+          onClick={() => {
+            dispatch(setProjectData(project));
+            dispatch(setProjectShow(true));
+          }}
         >
           Edit Project
         </MenuItem>

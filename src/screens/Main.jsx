@@ -7,15 +7,28 @@ import { GetChunks } from "../hooks/GetChunks.js";
 /* components */
 import MainNavbar from "../components/MainNavbar.jsx";
 import CreateProjectCard from "../components/CreateProject/CreateProjectCard.jsx";
-import CreateProjectModal from "../components/CreateProject/CreateProjectModal.jsx";
 import ProjectListCard from "../components/ProjectListCard.jsx";
 import Loading from "../components/Loading.jsx";
+/* modals */
 import InfoModal from "../components/InfoModal.jsx";
 import ProjectEdit from "../components/ProjectEdit.jsx";
+import CreateProjectModal from "../components/CreateProject/CreateProjectModal.jsx";
+import AddMemeberModal from "../components/addMemberModal";
+
+/* redux hooks */
+import { useDispatch } from "react-redux";
+/* redux actions */
+import { setAllUsers } from "../actions/globalSlice.js";
 
 const Main = () => {
+  const dispatch = useDispatch();
   /* states */
   const [requestData, setRequestData] = useState({
+    data: [],
+    error: "",
+    loading: false,
+  });
+  const [userRequestData, setUserRequestData] = useState({
     data: [],
     error: "",
     loading: false,
@@ -52,8 +65,26 @@ const Main = () => {
     }
   };
 
+  const getAllUsers = async () => {
+    try {
+      const resp = await base.get("/users");
+      setUserRequestData({
+        ...userRequestData,
+        data: resp.data,
+        loading: false,
+      });
+      dispatch(setAllUsers(resp.data));
+    } catch (error) {
+      setUserRequestData({
+        ...userRequestData,
+        loading: false,
+        error: error,
+      });
+    }
+  };
   useEffect(() => {
     getProjects();
+    getAllUsers();
   }, []);
 
   return (
@@ -86,12 +117,21 @@ const Main = () => {
         show={requestData.error}
         onClose={() => setRequestData({ data: [], error: "", loading: false })}
       />
+      <InfoModal
+        title={{ message: "Something went wrong", type: "error" }}
+        show={userRequestData.error}
+        onClose={() =>
+          setUserRequestData({ data: [], error: "", loading: false })
+        }
+      />
       <div className="mainpagination">
         <Pagination>{items}</Pagination>
       </div>
       {/* Create New Project Modal */}
       <CreateProjectModal getProjects={getProjects} />
       <ProjectEdit getProjects={getProjects} />
+      <CreateProjectModal getProjects={getProjects} />
+      <AddMemeberModal />
     </>
   );
 };
