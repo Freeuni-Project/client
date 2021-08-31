@@ -102,6 +102,8 @@ const AddTicket = () => {
   };
 
   if (requestData.error || requestData.success) {
+    console.log(requestData);
+
     return (
       <InfoModal
         title={

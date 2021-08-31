@@ -1,0 +1,36 @@
+.board {
+  width: 100%;
+  display: flex;
+  justify-content: space-around;
+}
+
+.board .column {
+  width: 20%;
+}
+.column {
+  h3 {
+    background-color: #f4f5f7;
+    border-radius: 7px;
+    padding: 10px 10px 10px 10px;
+  }
+}
+
+.droppable-col {
+  width: 100%;
+  height: 80vh;
+  display: flex;
+  flex-direction: column;
+  background-color: #f4f5f7;
+  padding: 10px 10px 0 10px;
+  border-radius: 7px;
+}
+
+.item {
+  margin-bottom: 10px;
+  color: black;
+  background-color: white;
+  border: 1px solid white;
+  box-shadow: $main-shadow;
+  padding: 5px;
+  border-radius: 7px;
+}

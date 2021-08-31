@@ -2,15 +2,19 @@ import React, { useEffect, useState } from "react";
 /* axios base url */
 import base from "../../axios/axiosBase";
 /* redux hoos */
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
+/* redux actions */
+import { setTickets } from "../../actions/currentProjectSlice";
 /* components */
 import BackLogItem from "./BackLogItem";
 import BackLogButton from "./BackLogButton";
 import Loading from "../Loading";
 /* modals */
 import InfoModal from "../InfoModal";
+import { v4 } from "uuid";
 
 const BackLog = () => {
+  const dispatch = useDispatch();
   /* states */
   const [didMount, setDidMount] = useState(false);
   const [requestData, setRequestData] = useState({
@@ -29,6 +33,16 @@ const BackLog = () => {
         loading: false,
         data: resp.data.json_list,
       });
+      const sortedTickets = {
+        todo: [],
+        inProgress: [],
+        inTesting: [],
+        done: [],
+      };
+      for (let ticket of resp.data.json_list) {
+        sortedTickets[ticket.status].push(ticket);
+      }
+      dispatch(setTickets(sortedTickets));
     } catch (error) {
       setRequestData({ ...requestData, loading: false, error: error });
     }

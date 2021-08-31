@@ -5,9 +5,7 @@
   margin-left: $small-margin;
   padding: $medium-padding;
   background-color: #f3f5f7;
-
   /* Backlog Item */
-
   .backlogitem {
     width: 100%;
     border-radius: $medium-radius;
@@ -28,6 +26,13 @@
       padding-left: $small-padding;
       padding-right: $small-padding;
       border-radius: $small-radius;
+    }
+    &__delete {
+      svg {
+        cursor: pointer;
+        color: #dc3545;
+        font-size: $small-font-sec;
+      }
     }
     /* statuses */
     .done {

@@ -7,8 +7,9 @@ import { useDispatch, useSelector } from "react-redux";
 import { setToken } from "../actions/authSlice";
 // hooks
 import { HandleInputs } from "../hooks/HandleInputs";
-
+import { useHistory } from "react-router";
 const Login = () => {
+  const history = useHistory();
   const dispatch = useDispatch();
   /* states */
   const [validationError, setValidationError] = useState({
@@ -37,7 +38,7 @@ const Login = () => {
             username: inputValues.username,
             password: inputValues.password,
           });
-          dispatch(setToken({ token: resp.data.api_key, role: "member" }));
+          dispatch(setToken({ token: resp.data.data.api_key, role: "member" }));
         } catch (error) {
           console.error(error);
         }
