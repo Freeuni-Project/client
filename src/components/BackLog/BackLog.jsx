@@ -64,7 +64,13 @@ const BackLog = () => {
         <>
           {requestData.data &&
             requestData.data.map((ticket) => {
-              return <BackLogItem key={ticket.id} ticket={ticket} />;
+              return (
+                <BackLogItem
+                  key={ticket.id}
+                  ticket={ticket}
+                  getProjectTickets={getProjectTickets}
+                />
+              );
             })}
           <BackLogButton />
         </>

@@ -6,16 +6,15 @@ import { IoTrashBinSharp } from "react-icons/io5";
 /* modals */
 import AgreeModal from "../AgreeModal";
 
-const BackLogItem = ({ ticket }) => {
+const BackLogItem = ({ ticket, getProjectTickets }) => {
   const { title, description, status, id } = ticket;
   /* states */
   const [agreeModal, setAgreeModal] = useState(false);
 
-  const deleteTicket = () => {
-    const resp = base.delete("");
+  const deleteTicket = async () => {
+    const resp = await base.delete(`/api/ticket/${id}`);
+    getProjectTickets();
   };
-
-  console.log(ticket);
 
   return (
     <div className="backlogitem">
@@ -31,7 +30,7 @@ const BackLogItem = ({ ticket }) => {
         {"N"}.{"T"}
       </div>
       <div className="backlogitem__delete">
-        <IoTrashBinSharp />
+        <IoTrashBinSharp onClick={() => deleteTicket()} />
       </div>
     </div>
   );
