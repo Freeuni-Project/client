@@ -12,7 +12,7 @@ const BackLogItem = ({ ticket, getProjectTickets }) => {
   const [agreeModal, setAgreeModal] = useState(false);
 
   const deleteTicket = async () => {
-    const resp = await base.delete(`/api/ticket/${id}`);
+    const resp = await base.delete(`/ticket/${id}`);
     getProjectTickets();
   };
 
