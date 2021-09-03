@@ -7,8 +7,14 @@ import { setAddTicketShow } from "../../actions/currentProjectSlice";
 
 const BackLogButton = () => {
   const dispatch = useDispatch();
+
   return (
-    <div className="backlogbutton" onClick={() => dispatch(setAddTicketShow())}>
+    <div
+      className="backlogbutton"
+      onClick={() => {
+        dispatch(setAddTicketShow());
+      }}
+    >
       <VscAdd /> Create Issue
     </div>
   );

@@ -14,6 +14,7 @@ import InfoModal from "../components/InfoModal.jsx";
 import ProjectEdit from "../components/ProjectEdit.jsx";
 import CreateProjectModal from "../components/CreateProject/CreateProjectModal.jsx";
 import AddMemeberModal from "../components/addMemberModal";
+import RemoveMember from "../components/removeMember.jsx";
 
 /* redux hooks */
 import { useDispatch } from "react-redux";
@@ -132,6 +133,7 @@ const Main = () => {
       <ProjectEdit getProjects={getProjects} />
       <CreateProjectModal getProjects={getProjects} />
       <AddMemeberModal />
+      <RemoveMember />
     </>
   );
 };

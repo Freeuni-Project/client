@@ -1,42 +1,32 @@
 import React, { useState, useEffect } from "react";
+/* import lodash */
 import _ from "lodash";
+/* axios base url */
+import base from "../../axios/axiosBase";
 /* redux hooks */
 import { useSelector } from "react-redux";
 /* import react dnd to impliment drag and drop */
 import { DragDropContext, Draggable, Droppable } from "react-beautiful-dnd";
 
 const Board = () => {
-  const item1 = { name: "Impliment Redux In React" };
-  const item2 = { name: "Create Delete Function" };
-  const item3 = { name: "Impliment i18n" };
-  const item4 = { name: "customize bootstrap colors" };
-  const item5 = { name: "clean up react project from bolerplate" };
-  const item6 = { name: "impliment registration form" };
-  const item7 = {
-    name: "connect apollo client with graphql for data fetching",
-  };
-  const item8 = { name: "Craete login form validation" };
-  const item9 = { name: "Markup main page" };
-  const item10 = { name: "create project remove functional" };
-
   /* states */
   const [state, setState] = useState({
-    todo: { title: "To Do", items: [item1, item2, item3, item4, item5, item6] },
+    todo: { title: "To Do", items: [] },
     inProgress: {
       title: "In Progress",
-      items: [item4, item5, item6, item7, item8, item9],
+      items: [],
     },
     inTesting: {
       title: "In Testing",
-      items: [item7, item8, item9, item8, item9],
+      items: [],
     },
-    done: { title: "Done", items: [item10, item1, item2, item8, item9] },
+    done: { title: "Done", items: [] },
   });
 
   /* redux states */
   const { tickets } = useSelector((state) => state.current);
 
-  const handleDragEnd = ({ destination, source }) => {
+  const handleDragEnd = async ({ destination, source }) => {
     if (!destination) {
       console.log("not dropped in droppable");
       return;
@@ -48,7 +38,7 @@ const Board = () => {
       console.log("dropped in same place");
       return;
     }
-    // save item to for copy
+    /* item for copy */
     const itemCopy = { ...state[source.droppableId].items[source.index] };
 
     setState((prev) => {
@@ -63,18 +53,25 @@ const Board = () => {
 
       return prev;
     });
+    const resp = await base.put(`/ticket/${itemCopy.ticketId}`, {
+      project_id: 54,
+      assignee_id: itemCopy.assignee_id,
+      title: itemCopy.title,
+      description: itemCopy.description,
+      status: destination.droppableId,
+      reporter_id: itemCopy.reporter_id,
+    });
   };
 
-  // useEffect(() => {
-  //   setState({
-  //     todo: { title: "To Do", items: [...tickets.todo] },
-  //     inProgress: { title: "In Progress", items: [...tickets.inProgress] },
-  //     inTesting: { title: "In Testing", items: [...tickets.inTesting] },
-  //     done: { title: "Done", items: [...tickets.done] },
-  //   });
-  // }, [tickets]);
+  useEffect(() => {
+    setState({
+      todo: { title: "To Do", items: [...tickets.todo] },
+      inProgress: { title: "In Progress", items: [...tickets.inProgress] },
+      inTesting: { title: "In Testing", items: [...tickets.inTesting] },
+      done: { title: "Done", items: [...tickets.done] },
+    });
+  }, [tickets]);
 
-  console.log(state.done);
   return (
     <>
       <div className="board">
@@ -106,7 +103,7 @@ const Board = () => {
                                     {...provided.draggableProps}
                                     {...provided.dragHandleProps}
                                   >
-                                    {el.name}
+                                    {el.title}
                                   </div>
                                 );
                               }}

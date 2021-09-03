@@ -10,11 +10,10 @@ import { setProjectUsers } from "../actions/currentProjectSlice";
 import MainNavbar from "../components/MainNavbar";
 import SideBar from "../components/SideBar";
 import BackLog from "../components/BackLog/BackLog.jsx";
-import Board from "../components/Board";
+import Board from "../components/Board/Board";
 import Loading from "../components/Loading";
 /* modals */
 import InfoModal from "../components/InfoModal";
-import AddTicket from "../components/addTicket";
 
 const CurrentProject = ({ match }) => {
   const dispatch = useDispatch();
@@ -94,7 +93,6 @@ const CurrentProject = ({ match }) => {
           setUsersRequestData({ data: "", error: "", loading: false });
         }}
       />
-      <AddTicket />
     </>
   );
 };

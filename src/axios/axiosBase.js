@@ -1,4 +1,8 @@
 import axios from "axios";
+/* redux store */
+import { store } from "../store";
+
+const state = store.getState();
 
 const instance = axios.create({
   // .. where we make our configurations

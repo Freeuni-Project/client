@@ -1,4 +1,6 @@
 import React, { useEffect, useState } from "react";
+/* import lodash */
+import _ from "lodash";
 /* axios base url */
 import base from "../../axios/axiosBase";
 /* redux hoos */
@@ -11,7 +13,8 @@ import BackLogButton from "./BackLogButton";
 import Loading from "../Loading";
 /* modals */
 import InfoModal from "../InfoModal";
-import { v4 } from "uuid";
+import AddTicket from "../addTicket";
+import v4 from "uuid";
 
 const BackLog = () => {
   const dispatch = useDispatch();
@@ -40,7 +43,11 @@ const BackLog = () => {
         done: [],
       };
       for (let ticket of resp.data.json_list) {
-        sortedTickets[ticket.status].push(ticket);
+        let newTicket = { ...ticket };
+        newTicket.ticketId = newTicket.id;
+        newTicket.id = v4();
+
+        sortedTickets[ticket.status].push(newTicket);
       }
       dispatch(setTickets(sortedTickets));
     } catch (error) {
@@ -57,30 +64,35 @@ const BackLog = () => {
   }, [id]);
 
   return (
-    <div className="backlogbox">
-      {requestData.loading ? (
-        <Loading />
-      ) : (
-        <>
-          {requestData.data &&
-            requestData.data.map((ticket) => {
-              return (
-                <BackLogItem
-                  key={ticket.id}
-                  ticket={ticket}
-                  getProjectTickets={getProjectTickets}
-                />
-              );
-            })}
-          <BackLogButton />
-        </>
-      )}
-      <InfoModal
-        show={requestData.error}
-        title={{ type: "error", message: "Something went wrong" }}
-        onClose={() => setRequestData({ data: "", error: "", loading: false })}
-      />
-    </div>
+    <>
+      <div className="backlogbox">
+        {requestData.loading ? (
+          <Loading />
+        ) : (
+          <>
+            {requestData.data &&
+              requestData.data.map((ticket) => {
+                return (
+                  <BackLogItem
+                    key={ticket.id}
+                    ticket={ticket}
+                    getProjectTickets={getProjectTickets}
+                  />
+                );
+              })}
+            <BackLogButton getProjectTickets={getProjectTickets} />
+          </>
+        )}
+        <InfoModal
+          show={requestData.error}
+          title={{ type: "error", message: "Something went wrong" }}
+          onClose={() =>
+            setRequestData({ data: "", error: "", loading: false })
+          }
+        />
+      </div>
+      <AddTicket getProjectTickets={getProjectTickets} />
+    </>
   );
 };
 

@@ -97,6 +97,7 @@ const AddMemeberModal = () => {
         onClose={() => {
           setAddUserRequest({ loading: false, error: "", success: "" });
           setAgreeModal(false);
+          window.location.reload();
         }}
       />
     );

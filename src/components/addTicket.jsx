@@ -13,7 +13,7 @@ import { HandleInputs } from "../hooks/HandleInputs";
 import AgreeModal from "./AgreeModal";
 import InfoModal from "./InfoModal";
 
-const AddTicket = () => {
+const AddTicket = ({ getProjectTickets }) => {
   const dispatch = useDispatch();
 
   /* states */
@@ -54,6 +54,7 @@ const AddTicket = () => {
         reporter_id: Number(inputValues.reporter),
       });
       setRequestData({ ...requestData, loading: false, success: resp.data });
+      getProjectTickets();
     } catch (error) {
       setRequestData({ ...requestData, loading: true, error: error });
     }

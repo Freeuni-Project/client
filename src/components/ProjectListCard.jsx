@@ -15,6 +15,8 @@ import {
   setProjectShow,
   setAddMemberShow,
   setAddMemberData,
+  setRemoveMemberShow,
+  setRemoveMemberData,
 } from "../actions/globalSlice";
 
 const ProjectListCard = ({ getProjects, project }) => {
@@ -71,7 +73,17 @@ const ProjectListCard = ({ getProjects, project }) => {
           Edit Project
         </MenuItem>
         <MenuItem divider />
-        <MenuItem onClick={() => setDeleteAgreeModal(true)}>Delete</MenuItem>
+        <MenuItem
+          onClick={() => {
+            dispatch(setRemoveMemberShow());
+            dispatch(setRemoveMemberData(id));
+          }}
+        >
+          <span style={{ color: "red" }}>Remove Member</span>
+        </MenuItem>
+        <MenuItem onClick={() => setDeleteAgreeModal(true)}>
+          <span style={{ color: "red" }}>Delete</span>
+        </MenuItem>
       </ContextMenu>
       <AgreeModal
         title="Do you really want to delete the project?"

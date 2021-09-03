@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 /* axios base url */
-import base from "../axios/axiosBase";
+import axios from "axios";
 /* redux hooks */
 import { useDispatch } from "react-redux";
 /* redux actions */
@@ -36,7 +36,7 @@ const Register = () => {
     const formIsValid = handleValidation();
 
     if (formIsValid) {
-      const resp = await base.post("/user/create", {
+      const resp = await axios.post("http://localhost:5005/api/user/create", {
         first_name: inputValues.firstName,
         last_name: inputValues.lastName,
         email: inputValues.email,

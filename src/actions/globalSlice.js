@@ -8,6 +8,7 @@ const initialState = {
   projectEdit: { show: false, project: {} },
   allUsers: [],
   addMember: { show: false, data: {} },
+  removeMember: { show: false, id: 0 },
 };
 
 const globalSlice = createSlice({
@@ -42,6 +43,12 @@ const globalSlice = createSlice({
     setAddMemberData: (state, action) => {
       state.addMember.data = action.payload;
     },
+    setRemoveMemberShow: (state) => {
+      state.removeMember.show = !state.removeMember.show;
+    },
+    setRemoveMemberData: (state, action) => {
+      state.removeMember.id = action.payload;
+    },
   },
 });
 
@@ -58,6 +65,9 @@ export const {
   // add member
   setAddMemberShow,
   setAddMemberData,
+  // remove member
+  setRemoveMemberShow,
+  setRemoveMemberData,
 } = globalSlice.actions;
 
 export default globalSlice.reducer;

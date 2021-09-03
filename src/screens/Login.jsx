@@ -1,15 +1,14 @@
 import React, { useState } from "react";
 /* axios base url */
-import base from "../axios/axiosBase";
+import axios from "axios";
 /* redux hooks */
 import { useDispatch, useSelector } from "react-redux";
 // redux actions
 import { setToken } from "../actions/authSlice";
 // hooks
 import { HandleInputs } from "../hooks/HandleInputs";
-import { useHistory } from "react-router";
+
 const Login = () => {
-  const history = useHistory();
   const dispatch = useDispatch();
   /* states */
   const [validationError, setValidationError] = useState({
@@ -27,21 +26,14 @@ const Login = () => {
   const handleLogin = async () => {
     const formIsValid = handleValidation();
     if (formIsValid) {
-      if (
-        inputValues.username === "administrator" &&
-        inputValues.password === "administrator"
-      ) {
-        dispatch(setToken({ token: "tokenadmin", role: "admin" }));
-      } else {
-        try {
-          const resp = await base.post("/user/login", {
-            username: inputValues.username,
-            password: inputValues.password,
-          });
-          dispatch(setToken({ token: resp.data.data.api_key, role: "member" }));
-        } catch (error) {
-          console.error(error);
-        }
+      try {
+        const resp = await axios.post("http://localhost:5005/api/user/login", {
+          username: inputValues.username,
+          password: inputValues.password,
+        });
+        dispatch(setToken({ token: resp.data.data.api_key, role: "member" }));
+      } catch (error) {
+        console.error(error);
       }
     }
   };
