@@ -6,7 +6,7 @@ import { IoTrashBinSharp } from "react-icons/io5";
 /* modals */
 import AgreeModal from "../AgreeModal";
 
-const BackLogItem = ({ ticket, getProjectTickets }) => {
+const BackLogItem = ({ ticket, getProjectTickets, setTicketcard }) => {
   const { title, description, status, id } = ticket;
   /* states */
   const [agreeModal, setAgreeModal] = useState(false);
@@ -17,7 +17,14 @@ const BackLogItem = ({ ticket, getProjectTickets }) => {
   };
 
   return (
-    <div className="backlogitem">
+    <div
+      className="backlogitem"
+      onClick={() =>
+        setTicketcard((val) => {
+          return { show: !val.show, data: ticket };
+        })
+      }
+    >
       <div className="backlogitem__title">{title}</div>
       <div className="backlogitem__description">{description}</div>
       <div className={`backlogitem__status ${status}`}>

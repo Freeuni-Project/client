@@ -1,24 +1,39 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 /* axios base url */
-import base from "../axios/axiosBase";
-/* bootstrap components */
-import { Modal, Button } from "react-bootstrap";
-/* redux hook */
-import { useDispatch, useSelector } from "react-redux";
+import base from "../../axios/axiosBase";
+/* redux states */
+import { useSelector, useDispatch } from "react-redux";
 /* redux actions */
-import { setAddTicketShow } from "../actions/currentProjectSlice";
+import {
+  setBoardModalData,
+  setBoardModalShow,
+} from "../../actions/currentProjectSlice";
+/* bootstrap elements */
+import { Modal, Button } from "react-bootstrap";
 /* hooks */
-import { HandleInputs } from "../hooks/HandleInputs";
+import { HandleInputs } from "../../hooks/HandleInputs";
 /* modals */
-import AgreeModal from "./AgreeModal";
-import InfoModal from "./InfoModal";
+import AgreeModal from "../AgreeModal";
+import InfoModal from "../InfoModal";
 /* validation */
-import { TicketValidation } from "../validations/ticketValidation";
+import { TicketValidation } from "../../validations/ticketValidation";
+/* reqeust */
+import { UpdateTicket } from "../../requests/UpdateTicket";
 
-const AddTicket = ({ getProjectTickets }) => {
+const BoardModal = () => {
   const dispatch = useDispatch();
 
+  const [agreeModal, setAgreeModal] = useState(false);
   /* states */
+  const [inputValues, setInputValues] = useState({
+    title: "",
+    description: "",
+    status: "todo",
+    reporter: "",
+    assignee: "",
+    ticketId: 0,
+    project_id: "",
+  });
   const [requestData, setRequestData] = useState({
     error: "",
     success: "",
@@ -29,82 +44,58 @@ const AddTicket = ({ getProjectTickets }) => {
     title: "",
     reporter: "",
   });
-  const [agreeModal, setAgreeModal] = useState(false);
-  const [inputValues, setInputValues] = useState({
-    title: "",
-    description: "",
-    status: "todo",
-    reporter: "",
-    assignee: "",
-  });
 
   /* redux states */
-  const { show, data } = useSelector((state) => state.current.addTicket);
+  const { boardModal } = useSelector((state) => state.current);
   const { projectUsers } = useSelector((state) => state.current);
-  const { id } = useSelector((state) => state.global.currentProject);
 
-  /* input clean up function */
-  const cleanInput = () => {
+  useEffect(() => {
+    const {
+      title,
+      description,
+      assignee_id,
+      reporter_id,
+      status,
+      ticketId,
+      project_id,
+    } = boardModal.data;
     setInputValues({
-      title: "",
-      description: "",
-      status: "todo",
-      reporter: "",
-      assignee: "",
+      title: title,
+      description: description,
+      status: status,
+      reporter: reporter_id,
+      assignee: assignee_id,
+      ticketId: ticketId,
+      project_id: project_id,
     });
-  };
-
-  /* craete ticket function */
-  const createTicket = async () => {
-    setRequestData({ ...requestData, loading: true });
-    try {
-      const resp = await base.post("/ticket/create", {
-        title: inputValues.title,
-        description: inputValues.description,
-        status: inputValues.status,
-        project_id: id,
-        assignee_id: Number(inputValues.assignee),
-        reporter_id: Number(inputValues.reporter),
-      });
-      setRequestData({ ...requestData, loading: false, success: resp.data });
-      cleanInput();
-      getProjectTickets();
-    } catch (error) {
-      setRequestData({ ...requestData, loading: true, error: error });
-    }
-  };
+  }, [boardModal.data]);
 
   if (requestData.error || requestData.success) {
-    console.log(requestData);
-
     return (
       <InfoModal
         title={
           requestData.error
             ? { message: "Something went wrong", type: "error" }
-            : { message: "Has been added successfully", type: "success" }
+            : { message: "Has been edited successfully", type: "success" }
         }
         show={true}
         onClose={() => {
           setRequestData({ loading: false, error: "", success: "" });
           setAgreeModal(false);
+          window.location.reload();
         }}
       />
     );
   }
-
   return (
     <>
       <Modal
-        show={show}
-        onHide={() => {
-          dispatch(setAddTicketShow());
-          cleanInput();
-        }}
+        show={boardModal.show}
         centered
+        onHide={() => dispatch(setBoardModalShow())}
       >
         <Modal.Header closeButton>
-          <Modal.Title>Add Ticket</Modal.Title>
+          <Modal.Title>Ticket</Modal.Title>
         </Modal.Header>
         <Modal.Body>
           <input
@@ -146,10 +137,13 @@ const AddTicket = ({ getProjectTickets }) => {
               HandleInputs(e, inputValues, setInputValues);
             }}
           >
-            <option>Choose Reporter</option>
+            <option key="choose reporter" value="reporter">
+              Choose Reporter
+            </option>
             {projectUsers.map((user) => {
+              const selected = inputValues.reporter === user.id;
               return (
-                <option key={user.id} value={user.id}>
+                <option key={user.id} value={user.id} selected={selected}>
                   {user.username}
                 </option>
               );
@@ -167,8 +161,10 @@ const AddTicket = ({ getProjectTickets }) => {
           >
             <option>Assigne User</option>
             {projectUsers.map((user) => {
+              const selected = inputValues.assignee === user.id;
+
               return (
-                <option key={user.id} value={user.id}>
+                <option key={user.id} value={user.id} selected={selected}>
                   {user.username}
                 </option>
               );
@@ -178,39 +174,38 @@ const AddTicket = ({ getProjectTickets }) => {
         <Modal.Footer>
           <Button
             variant="secondary"
-            onClick={() => {
-              dispatch(setAddTicketShow());
-              cleanInput();
-            }}
+            onClick={() => dispatch(setBoardModalShow())}
           >
-            Close
+            Cancel
           </Button>
           <Button
             variant="primary"
             onClick={() => {
               TicketValidation(inputValues, setValidationError, () => {
                 setAgreeModal(true);
-                dispatch(setAddTicketShow());
+                dispatch(setBoardModalShow());
               });
             }}
           >
-            Add Ticket
+            Save
           </Button>
         </Modal.Footer>
       </Modal>
       <AgreeModal
-        show={agreeModal}
-        title="Do you really want to add ticket ? "
-        loading={requestData.loading}
+        title="Do you realy want to edit ticket ? "
         agreeFunc={() => {
-          createTicket();
+          setAgreeModal(false);
+          UpdateTicket(inputValues, setRequestData, requestData);
         }}
         disagreeFunc={() => {
           setAgreeModal(false);
+          dispatch(setBoardModalShow());
         }}
+        loading={requestData.loading}
+        show={agreeModal}
       />
     </>
   );
 };
 
-export default AddTicket;
+export default BoardModal;

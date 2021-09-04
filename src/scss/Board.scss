@@ -5,13 +5,15 @@
 }
 
 .board .column {
-  width: 20%;
+  width: 23%;
 }
 .column {
   h3 {
     background-color: #f4f5f7;
     border-radius: 7px;
     padding: 10px 10px 10px 10px;
+    border: 1px solid rgba(0, 0, 0, 0.125);
+    border-radius: 0.25rem;
   }
 }
 
@@ -23,14 +25,22 @@
   background-color: #f4f5f7;
   padding: 10px 10px 0 10px;
   border-radius: 7px;
+  border: 1px solid rgba(0, 0, 0, 0.125);
+  border-radius: 0.25rem;
 }
 
 .item {
-  margin-bottom: 10px;
   color: black;
   background-color: white;
   border: 1px solid white;
   box-shadow: $main-shadow;
   padding: 5px;
   border-radius: 7px;
+  margin-bottom: 10px;
+  &__info {
+    padding: 5px;
+    border-radius: $small-radius;
+    margin-top: $small-margin;
+    box-shadow: $main-shadow;
+  }
 }

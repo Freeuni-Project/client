@@ -1,12 +1,20 @@
-.backlogbox {
+.backlogcontainer {
   width: 100%;
+  display: flex;
+}
+.backlogbox {
   box-shadow: $main-shadow;
   border-radius: $medium-radius;
   margin-left: $small-margin;
   padding: $medium-padding;
   background-color: #f3f5f7;
+  border: 1px solid rgba(0, 0, 0, 0.125);
+  border-radius: 0.25rem;
+  transition: all 1s ease-in-out;
   /* Backlog Item */
   .backlogitem {
+    cursor: pointer;
+    position: relative;
     width: 100%;
     border-radius: $medium-radius;
     padding: $small-padding;
@@ -15,11 +23,16 @@
     background-color: #fff;
     box-shadow: $main-shadow;
     display: flex;
-    justify-content: space-between;
+
     align-items: center;
     transition: $main-transition;
     margin-bottom: $small-margin/1.5;
     &__status {
+      margin-left: $medium-margin;
+      width: 8rem;
+      display: flex;
+      justify-content: center;
+      align-items: center;
       cursor: pointer;
       padding-top: $small-padding/2;
       padding-bottom: $small-padding/2;
@@ -28,6 +41,8 @@
       border-radius: $small-radius;
     }
     &__delete {
+      position: absolute;
+      right: $small-margin;
       svg {
         cursor: pointer;
         color: #dc3545;
@@ -52,6 +67,13 @@
       background-color: #45526d;
     }
     &__assigneeid {
+      width: 5rem;
+      margin-left: $medium-margin;
+      margin-right: $medium-margin * 2;
+
+      display: flex;
+      align-items: center;
+      justify-content: center;
       border-radius: $medium-radius;
       box-shadow: $main-shadow;
       padding-top: $small-padding/2;
@@ -61,10 +83,22 @@
       cursor: pointer;
     }
     &__description {
+      width: 10rem;
       cursor: pointer;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      display: -webkit-box;
+      -webkit-line-clamp: 1; /* number of lines to show */
+      -webkit-box-orient: vertical;
     }
     &__title {
-      cursor: pointer;
+      width: 10rem;
+      margin-right: $medium-margin;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      display: -webkit-box;
+      -webkit-line-clamp: 1; /* number of lines to show */
+      -webkit-box-orient: vertical;
     }
   }
   .backlogitem:hover {
@@ -92,5 +126,23 @@
   }
   .backlogbutton:hover {
     background-color: #e2e3e9;
+  }
+}
+
+/* backlog ticket card */
+.backlog__ticketcard {
+  width: 100%;
+  margin-left: $small-margin;
+  background-color: #f3f5f7;
+  box-shadow: $main-shadow;
+  position: relative;
+  display: flex;
+  border: 1px solid rgba(0, 0, 0, 0.125);
+  border-radius: 0.25rem;
+  padding-bottom: 3.5rem;
+  .button__box {
+    position: absolute;
+    right: $small-margin;
+    bottom: $small-margin;
   }
 }

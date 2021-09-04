@@ -1,9 +1,11 @@
-import { createSlice, current } from "@reduxjs/toolkit";
+import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
   projectUsers: [],
   addTicket: { show: false, data: {} },
   tickets: {},
+  refetch: "",
+  boardModal: { show: false, data: {} },
 };
 
 const currentProjectSlice = createSlice({
@@ -22,6 +24,15 @@ const currentProjectSlice = createSlice({
     setTickets: (state, action) => {
       state.tickets = action.payload;
     },
+    setRefetch: (state, action) => {
+      state.refetch = action.payload;
+    },
+    setBoardModalShow: (state) => {
+      state.boardModal.show = !state.boardModal.show;
+    },
+    setBoardModalData: (state, action) => {
+      state.boardModal.data = action.payload;
+    },
   },
 });
 
@@ -30,6 +41,9 @@ export const {
   setAddTicketShow,
   setAddTicketData,
   setTickets,
+  setRefetch,
+  setBoardModalShow,
+  setBoardModalData,
 } = currentProjectSlice.actions;
 
 export default currentProjectSlice.reducer;

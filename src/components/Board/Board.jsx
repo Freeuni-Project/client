@@ -4,11 +4,19 @@ import _ from "lodash";
 /* axios base url */
 import base from "../../axios/axiosBase";
 /* redux hooks */
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
+/* redux actions */
+import {
+  setBoardModalShow,
+  setBoardModalData,
+} from "../../actions/currentProjectSlice";
 /* import react dnd to impliment drag and drop */
 import { DragDropContext, Draggable, Droppable } from "react-beautiful-dnd";
+/* modals */
+import BoardModal from "./BoardModal";
 
 const Board = () => {
+  const dispatch = useDispatch();
   /* states */
   const [state, setState] = useState({
     todo: { title: "To Do", items: [] },
@@ -24,8 +32,10 @@ const Board = () => {
   });
 
   /* redux states */
+  const { projectUsers } = useSelector((state) => state.current);
   const { tickets } = useSelector((state) => state.current);
 
+  /* drag end drop functional */
   const handleDragEnd = async ({ destination, source }) => {
     if (!destination) {
       console.log("not dropped in droppable");
@@ -53,14 +63,18 @@ const Board = () => {
 
       return prev;
     });
-    const resp = await base.put(`/ticket/${itemCopy.ticketId}`, {
-      project_id: 54,
-      assignee_id: itemCopy.assignee_id,
-      title: itemCopy.title,
-      description: itemCopy.description,
-      status: destination.droppableId,
-      reporter_id: itemCopy.reporter_id,
-    });
+    try {
+      const resp = await base.put(`/ticket/${itemCopy.ticketId}`, {
+        project_id: 54,
+        assignee_id: itemCopy.assignee_id,
+        title: itemCopy.title,
+        description: itemCopy.description,
+        status: destination.droppableId,
+        reporter_id: itemCopy.reporter_id,
+      });
+    } catch (error) {
+      console.error(error);
+    }
   };
 
   useEffect(() => {
@@ -96,14 +110,22 @@ const Board = () => {
                               draggableId={el.id}
                             >
                               {(provided) => {
+                                const reporter = projectUsers.find(
+                                  (user) => user.id === el.reporter_id
+                                );
+                                console.log(reporter);
                                 return (
                                   <div
                                     className="item"
+                                    onClick={() => {
+                                      dispatch(setBoardModalShow());
+                                      dispatch(setBoardModalData(el));
+                                    }}
                                     ref={provided.innerRef}
                                     {...provided.draggableProps}
                                     {...provided.dragHandleProps}
                                   >
-                                    {el.title}
+                                    <div>{el.title}</div>
                                   </div>
                                 );
                               }}
@@ -120,6 +142,7 @@ const Board = () => {
           })}
         </DragDropContext>
       </div>
+      <BoardModal />
     </>
   );
 };
