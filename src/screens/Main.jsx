@@ -89,22 +89,19 @@ const Main = () => {
   useEffect(() => {
     getProjects();
     getAllUsers();
-    setIsAdmin(() => {
-      if (localStorage.getItem("user-role") == false) {
-        setIsAdmin(false);
-      }
-      if (localStorage.getItem("user-role") == false) {
-        setIsAdmin(true);
-      }
-    });
+    const isAdmin = localStorage.getItem("user-role");
+    setIsAdmin(isAdmin);
   }, []);
 
   return (
     <>
       <MainNavbar />
       <div className="containerwrapper">
-        {isAdmin ? <CreateProjectCard /> : ""}
-        <div className="projectsbox">
+        {isAdmin == "true" ? <CreateProjectCard /> : ""}
+        <div
+          className="projectsbox"
+          style={{ marginTop: isAdmin == "false" && "2rem" }}
+        >
           {requestData.loading ? (
             <Loading />
           ) : (

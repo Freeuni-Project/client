@@ -46,7 +46,7 @@ const ProjectListCard = ({ getProjects, project, index, isAdmin }) => {
       setRequestData({ ...requestData, error: error, loading: false });
     }
   };
-  if (isAdmin) {
+  if (isAdmin == "true") {
     return (
       <>
         <ContextMenuTrigger id={project_name}>
@@ -109,7 +109,7 @@ const ProjectListCard = ({ getProjects, project, index, isAdmin }) => {
       </>
     );
   }
-  if (!isAdmin) {
+  if (isAdmin == "false") {
     return (
       <Link
         to={`/project/${id}`}

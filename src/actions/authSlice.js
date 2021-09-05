@@ -19,6 +19,7 @@ export const authSlice = createSlice({
       state.token = "";
       state.role = "";
       localStorage.setItem("token-short", "");
+      localStorage.setItem("user-role", "");
     },
   },
 });

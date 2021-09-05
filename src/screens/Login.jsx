@@ -76,6 +76,8 @@ const Login = () => {
       localStorage.setItem("user-role", requestData.success.data.is_admin);
       localStorage.setItem("token-short", requestData.success.data.api_key);
 
+      console.log(requestData.success.data.is_admin);
+
       dispatch(
         setToken({
           token: requestData.success.data.api_key,
