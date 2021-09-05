@@ -8,7 +8,7 @@ const CreateProjectCard = () => {
   const dispatch = useDispatch();
 
   return (
-    <div className="card border-primary">
+    <div className="createproject">
       <div onClick={() => dispatch(setCreateProject({ show: true }))}>
         Create Project
       </div>

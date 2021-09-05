@@ -1,26 +1,93 @@
 /* CreateProjectCard */
-.card {
-  width: 15rem;
-  height: 8rem;
+.containerwrapper {
+  width: 90%;
   display: flex;
+  margin: auto;
   justify-content: center;
-  align-items: center;
-  font-size: $medium-font;
-  div {
+  flex-direction: column;
+  position: relative;
+  .createproject {
+    padding: $small-padding;
+    position: absolute;
+    top: $small-margin;
+    background-color: $main-color;
+    color: white;
     cursor: pointer;
+    border-radius: $small-radius;
+    right: 0;
   }
-}
-.contentwrapper {
-  width: 100%;
-  display: flex;
-  justify-content: center;
 }
 
 .projectsbox {
-  display: grid;
-  grid-template-columns: auto auto auto auto auto;
-  grid-row-gap: $small-margin * 2;
-  grid-column-gap: $small-margin * 2;
-  margin-top: $small-margin;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  display: flex;
+  background-color: #f3f5f7;
+  border: 1px solid rgba(0, 0, 0, 0.125);
+  border-radius: 0.25rem;
+  margin-top: $medium-margin * 2.3;
   justify-content: center;
+  padding: $medium-margin;
+
+  &__item {
+    width: 80vw !important;
+    cursor: pointer;
+    position: relative;
+    border-radius: 1rem;
+    padding: 0.5rem;
+    padding-left: $medium-padding;
+    padding-right: $medium-padding;
+    background-color: #fff;
+    box-shadow: $main-shadow;
+    display: flex;
+    align-items: center;
+    transition: $main-transition;
+    display: flex;
+    margin-top: $small-margin;
+
+    .icon {
+      font-size: 2rem;
+      margin-right: $medium-margin;
+      color: $main-color;
+    }
+    .status {
+      margin-left: $medium-margin;
+      width: 15rem;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      cursor: pointer;
+      padding-top: $small-padding/2;
+      padding-bottom: $small-padding/2;
+      padding-left: $small-padding;
+      padding-right: $small-padding;
+      border-radius: $small-radius;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      display: -webkit-box;
+      -webkit-line-clamp: 1; /* number of lines to show */
+      -webkit-box-orient: vertical;
+    }
+
+    .description {
+      width: 20rem;
+      cursor: pointer;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      display: -webkit-box;
+      -webkit-line-clamp: 1; /* number of lines to show */
+      -webkit-box-orient: vertical;
+    }
+    .title {
+      text-transform: capitalize;
+      width: 10rem;
+      margin-right: $medium-margin;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      display: -webkit-box;
+      -webkit-line-clamp: 1; /* number of lines to show */
+      -webkit-box-orient: vertical;
+    }
+  }
 }

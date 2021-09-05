@@ -15,14 +15,17 @@ import ProjectEdit from "../components/ProjectEdit.jsx";
 import CreateProjectModal from "../components/CreateProject/CreateProjectModal.jsx";
 import AddMemeberModal from "../components/addMemberModal";
 import RemoveMember from "../components/removeMember.jsx";
-
 /* redux hooks */
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 /* redux actions */
 import { setAllUsers } from "../actions/globalSlice.js";
 
 const Main = () => {
   const dispatch = useDispatch();
+  /* auth token */
+  const token = useSelector((state) => state.auth.token);
+  /* check for role */
+  const [isAdmin, setIsAdmin] = useState(null);
   /* states */
   const [requestData, setRequestData] = useState({
     data: [],
@@ -57,51 +60,63 @@ const Main = () => {
   const getProjects = async () => {
     try {
       setRequestData({ ...requestData, loading: true });
-      const resp = await base.get("/projects");
+      const resp = await base.get("/projects", {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
       const pageData = GetChunks(resp.data, 11);
 
       setRequestData({ ...requestData, data: pageData, loading: false });
-    } catch (error) {
-      window.location.reload();
-    }
+    } catch (error) {}
   };
-
-  console.log(localStorage.getItem("token-short"));
 
   const getAllUsers = async () => {
     try {
-      const resp = await base.get("/users");
+      const resp = await base.get("/users", {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
       setUserRequestData({
         ...userRequestData,
         data: resp.data,
         loading: false,
       });
       dispatch(setAllUsers(resp.data));
-    } catch (error) {
-      window.location.reload();
-    }
+    } catch (error) {}
   };
   useEffect(() => {
     getProjects();
     getAllUsers();
+    setIsAdmin(() => {
+      if (localStorage.getItem("user-role") == false) {
+        setIsAdmin(false);
+      }
+      if (localStorage.getItem("user-role") == false) {
+        setIsAdmin(true);
+      }
+    });
   }, []);
 
   return (
     <>
       <MainNavbar />
-      <div className="container">
+      <div className="containerwrapper">
+        {isAdmin ? <CreateProjectCard /> : ""}
         <div className="projectsbox">
-          <CreateProjectCard />
           {requestData.loading ? (
             <Loading />
           ) : (
             <>
               {requestData.data[active - 1] &&
-                requestData.data[active - 1].map((project) => {
+                requestData.data[active - 1].map((project, index) => {
                   return (
                     <React.Fragment key={project.id}>
                       <ProjectListCard
+                        isAdmin={isAdmin}
                         project={project}
+                        index={index}
                         getProjects={getProjects}
                       />
                     </React.Fragment>

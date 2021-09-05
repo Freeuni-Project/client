@@ -19,7 +19,6 @@ import { GetProjectTickets } from "../../requests/GetProjectTickets";
 import { v4 } from "uuid";
 
 const Board = () => {
-  const colorArray = ["#5244ab", "#00a4be", "#de350c", "#00875a"];
   const [requestData, setRequestData] = useState({
     data: "",
     error: "",

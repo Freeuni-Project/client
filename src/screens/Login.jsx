@@ -73,6 +73,7 @@ const Login = () => {
 
   if (!requestData.loading && !requestData.error) {
     if (requestData.success.data) {
+      localStorage.setItem("user-role", requestData.success.data.is_admin);
       localStorage.setItem("token-short", requestData.success.data.api_key);
 
       dispatch(
@@ -82,8 +83,6 @@ const Login = () => {
       );
     }
   }
-
-  console.log(localStorage.getItem("token-short"));
 
   return (
     <>
