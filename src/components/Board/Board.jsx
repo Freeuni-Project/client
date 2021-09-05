@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 /* import lodash */
-import _ from "lodash";
+import _, { assign } from "lodash";
 /* axios base url */
 import base from "../../axios/axiosBase";
 /* redux hooks */
@@ -14,8 +14,18 @@ import {
 import { DragDropContext, Draggable, Droppable } from "react-beautiful-dnd";
 /* modals */
 import BoardModal from "./BoardModal";
+/* requests */
+import { GetProjectTickets } from "../../requests/GetProjectTickets";
+import { v4 } from "uuid";
 
 const Board = () => {
+  const colorArray = ["#5244ab", "#00a4be", "#de350c", "#00875a"];
+  const [requestData, setRequestData] = useState({
+    data: "",
+    error: "",
+    loading: false,
+  });
+
   const dispatch = useDispatch();
   /* states */
   const [state, setState] = useState({
@@ -33,7 +43,7 @@ const Board = () => {
 
   /* redux states */
   const { projectUsers } = useSelector((state) => state.current);
-  const { tickets } = useSelector((state) => state.current);
+  const { id } = useSelector((state) => state.global.currentProject);
 
   /* drag end drop functional */
   const handleDragEnd = async ({ destination, source }) => {
@@ -72,20 +82,44 @@ const Board = () => {
         status: destination.droppableId,
         reporter_id: itemCopy.reporter_id,
       });
+      GetProjectTickets(id, requestData, setRequestData);
     } catch (error) {
       console.error(error);
     }
   };
 
   useEffect(() => {
-    setState({
-      todo: { title: "To Do", items: [...tickets.todo] },
-      inProgress: { title: "In Progress", items: [...tickets.inProgress] },
-      inTesting: { title: "In Testing", items: [...tickets.inTesting] },
-      done: { title: "Done", items: [...tickets.done] },
-    });
-  }, [tickets]);
+    if (requestData.data) {
+      const sortedTickets = {
+        todo: [],
+        inProgress: [],
+        inTesting: [],
+        done: [],
+      };
+      for (let ticket of requestData.data) {
+        let newTicket = { ...ticket };
+        newTicket.ticketId = newTicket.id;
+        newTicket.id = v4();
+        sortedTickets[ticket.status].push(newTicket);
+      }
+      setState({
+        todo: { title: "To Do", items: [...sortedTickets.todo] },
+        inProgress: {
+          title: "In Progress",
+          items: [...sortedTickets.inProgress],
+        },
+        inTesting: {
+          title: "In Testing",
+          items: [...sortedTickets.inTesting],
+        },
+        done: { title: "Done", items: [...sortedTickets.done] },
+      });
+    }
+  }, [requestData.data]);
 
+  useEffect(() => {
+    GetProjectTickets(id, requestData, setRequestData);
+  }, []);
   return (
     <>
       <div className="board">
@@ -113,7 +147,10 @@ const Board = () => {
                                 const reporter = projectUsers.find(
                                   (user) => user.id === el.reporter_id
                                 );
-                                console.log(reporter);
+                                const assigned = projectUsers.find(
+                                  (user) => user.id === el.assignee_id
+                                );
+
                                 return (
                                   <div
                                     className="item"
@@ -125,7 +162,11 @@ const Board = () => {
                                     {...provided.draggableProps}
                                     {...provided.dragHandleProps}
                                   >
-                                    <div>{el.title}</div>
+                                    {el.title}
+                                    <div className="icon">
+                                      {assigned &&
+                                        `${assigned.first_name[0]}${assigned.last_name[0]}`}
+                                    </div>
                                   </div>
                                 );
                               }}
@@ -142,7 +183,11 @@ const Board = () => {
           })}
         </DragDropContext>
       </div>
-      <BoardModal />
+      <BoardModal
+        GetProjectTickets={() =>
+          GetProjectTickets(id, requestData, setRequestData)
+        }
+      />
     </>
   );
 };

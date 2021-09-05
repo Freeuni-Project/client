@@ -17,6 +17,8 @@ import BackLogTicket from "./BackLogTicket";
 /* modals */
 import InfoModal from "../InfoModal";
 import AddTicket from "../addTicket";
+/* request */
+import { GetProjectTickets } from "../../requests/GetProjectTickets";
 
 const BackLog = () => {
   const dispatch = useDispatch();
@@ -33,38 +35,10 @@ const BackLog = () => {
   /* redux states */
   const { id } = useSelector((state) => state.global.currentProject);
 
-  const getProjectTickets = async () => {
-    setRequestData({ ...requestData, loading: true });
-    try {
-      const resp = await base.get(`/tickets/projects/${id}`);
-      setRequestData({
-        ...requestData,
-        loading: false,
-        data: resp.data.json_list,
-      });
-      const sortedTickets = {
-        todo: [],
-        inProgress: [],
-        inTesting: [],
-        done: [],
-      };
-      for (let ticket of resp.data.json_list) {
-        let newTicket = { ...ticket };
-        newTicket.ticketId = newTicket.id;
-        newTicket.id = v4();
-
-        sortedTickets[ticket.status].push(newTicket);
-      }
-      dispatch(setTickets(sortedTickets));
-    } catch (error) {
-      setRequestData({ ...requestData, loading: false, error: error });
-    }
-  };
-
   useEffect(() => {
     setDidMount(true);
     if (id) {
-      getProjectTickets();
+      GetProjectTickets(id, requestData, setRequestData, dispatch);
     }
     return () => setDidMount(false);
   }, [id]);
@@ -84,12 +58,19 @@ const BackLog = () => {
                     <BackLogItem
                       key={ticket.id}
                       ticket={ticket}
-                      getProjectTickets={getProjectTickets}
+                      GetProjectTickets={() =>
+                        GetProjectTickets(
+                          id,
+                          requestData,
+                          setRequestData,
+                          dispatch
+                        )
+                      }
                       setTicketcard={setTicketcard}
                     />
                   );
                 })}
-              <BackLogButton getProjectTickets={getProjectTickets} />
+              <BackLogButton />
             </>
           )}
           <InfoModal
@@ -101,10 +82,20 @@ const BackLog = () => {
           />
         </div>
         {ticketcard.show && (
-          <BackLogTicket data={ticketcard.data} projectId={id} />
+          <BackLogTicket
+            data={ticketcard.data}
+            projectId={id}
+            GetProjectTickets={() =>
+              GetProjectTickets(id, requestData, setRequestData, dispatch)
+            }
+          />
         )}
       </div>
-      <AddTicket getProjectTickets={getProjectTickets} />
+      <AddTicket
+        GetProjectTickets={() =>
+          GetProjectTickets(id, requestData, setRequestData, dispatch)
+        }
+      />
     </>
   );
 };

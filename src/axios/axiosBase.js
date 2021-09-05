@@ -1,19 +1,11 @@
 import axios from "axios";
-/* redux store */
-import { store } from "../store";
-
-const state = store.getState();
 
 const instance = axios.create({
-  // .. where we make our configurations
-  baseURL: "http://localhost:5005/api",
+  baseURL: "http://localhost:8000/backend/api",
+  headers: {
+    Authorization: `Bearer ${localStorage.getItem("token-short")}
+`,
+  },
 });
-
-// // Where you would set stuff like your 'Authorization' header, etc ...
-// instance.defaults.headers.common['Authorization'] = 'AUTH TOKEN FROM INSTANCE';
-
-// // Also add/ configure interceptors && all the other cool stuff
-
-// instance.interceptors.request...
 
 export default instance;

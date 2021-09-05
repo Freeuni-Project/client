@@ -15,7 +15,7 @@ import InfoModal from "./InfoModal";
 /* validation */
 import { TicketValidation } from "../validations/ticketValidation";
 
-const AddTicket = ({ getProjectTickets }) => {
+const AddTicket = ({ GetProjectTickets }) => {
   const dispatch = useDispatch();
 
   /* states */
@@ -68,7 +68,7 @@ const AddTicket = ({ getProjectTickets }) => {
       });
       setRequestData({ ...requestData, loading: false, success: resp.data });
       cleanInput();
-      getProjectTickets();
+      GetProjectTickets();
     } catch (error) {
       setRequestData({ ...requestData, loading: true, error: error });
     }
@@ -134,7 +134,7 @@ const AddTicket = ({ getProjectTickets }) => {
             }}
           >
             <option value="default">Choose Status</option>
-            <option value="todo">To-DO</option>
+            <option value="todo">To-Do</option>
             <option value="inProgress">In Progress</option>
             <option value="inTesting">In Testing</option>
             <option value="done">Done</option>

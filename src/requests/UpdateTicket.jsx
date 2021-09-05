@@ -1,6 +1,11 @@
 import base from "../axios/axiosBase";
 
-const useUpdateTicket = async (inputValues, setRequestData, requestData) => {
+const useUpdateTicket = async (
+  inputValues,
+  setRequestData,
+  requestData,
+  GetProjectTickets
+) => {
   setRequestData({ ...requestData, loading: true });
   try {
     const resp = await base.put(`/ticket/${inputValues.ticketId}`, {
@@ -16,6 +21,7 @@ const useUpdateTicket = async (inputValues, setRequestData, requestData) => {
       loading: false,
       success: resp.data,
     });
+    GetProjectTickets();
   } catch (error) {
     setRequestData({
       ...requestData,
@@ -25,6 +31,16 @@ const useUpdateTicket = async (inputValues, setRequestData, requestData) => {
   }
 };
 
-export const UpdateTicket = (inputValues, setRequestData, requestData) => {
-  return useUpdateTicket(inputValues, setRequestData, requestData);
+export const UpdateTicket = (
+  inputValues,
+  setRequestData,
+  requestData,
+  GetProjectTickets
+) => {
+  return useUpdateTicket(
+    inputValues,
+    setRequestData,
+    requestData,
+    GetProjectTickets
+  );
 };

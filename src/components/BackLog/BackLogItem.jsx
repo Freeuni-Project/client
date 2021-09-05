@@ -29,9 +29,9 @@ const BackLogItem = ({ ticket, getProjectTickets, setTicketcard }) => {
       <div className="backlogitem__description">{description}</div>
       <div className={`backlogitem__status ${status}`}>
         {(status === "todo" && "To Do") ||
-          (status === "inProgress" && "In-Progress") ||
+          (status === "inProgress" && "In Progress") ||
           (status === "done" && "Done") ||
-          (status === "inTesting" && "In-Testing")}
+          (status === "inTesting" && "In Testing")}
       </div>
       <div className="backlogitem__assigneeid">
         {"N"}.{"T"}

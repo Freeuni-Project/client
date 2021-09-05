@@ -2,7 +2,7 @@ import React from "react";
 // redux hooks
 import { useDispatch } from "react-redux";
 // redux actions
-import { setToken } from "../actions/authSlice";
+import { setToken, removeToken } from "../actions/authSlice";
 // bootstrap elements
 import { Navbar, Container, Nav, NavDropdown } from "react-bootstrap";
 // bootstrap icons
@@ -18,7 +18,7 @@ const MainNavbar = () => {
   return (
     <Navbar collapseOnSelect expand="lg" bg="primary" variant="dark">
       <Container>
-        <Navbar.Brand href="/">Jira Free University</Navbar.Brand>
+        <Navbar.Brand href="/">Free University</Navbar.Brand>
         <Navbar.Toggle aria-controls="responsive-navbar-nav" />
         <Navbar.Collapse id="responsive-navbar-nav">
           <Nav className="me-auto"></Nav>
@@ -32,7 +32,7 @@ const MainNavbar = () => {
               <NavDropdown.Divider />
               <NavDropdown.Item
                 onClick={() => {
-                  dispatch(setToken(""));
+                  dispatch(removeToken());
                   history.push("/login");
                 }}
               >

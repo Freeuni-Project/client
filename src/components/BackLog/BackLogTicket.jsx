@@ -13,7 +13,7 @@ import InfoModal from "../InfoModal";
 /* request */
 import { UpdateTicket } from "../../requests/UpdateTicket";
 
-const BackLogTicket = ({ data, projectId }) => {
+const BackLogTicket = ({ data, projectId, GetProjectTickets }) => {
   /* states */
   const [agreeModal, setAgreeModal] = useState(false);
 
@@ -154,7 +154,12 @@ const BackLogTicket = ({ data, projectId }) => {
         title="Do you realy want to edit ticket ? "
         agreeFunc={() => {
           setAgreeModal(false);
-          UpdateTicket(inputValues, setRequestData, requestData);
+          UpdateTicket(
+            inputValues,
+            setRequestData,
+            requestData,
+            GetProjectTickets
+          );
         }}
         disagreeFunc={() => {
           setAgreeModal(false);

@@ -37,10 +37,22 @@
   padding: 5px;
   border-radius: 7px;
   margin-bottom: 10px;
-  &__info {
-    padding: 5px;
-    border-radius: $small-radius;
-    margin-top: $small-margin;
+  display: flex;
+  position: relative;
+  padding-bottom: 60px;
+  .icon {
+    background-color: #5244ab;
+    color: white;
+    position: absolute;
+    border-radius: 100%;
+    width: 2.5rem;
+    height: 2.5rem;
+    right: 5px;
+    bottom: 5px;
     box-shadow: $main-shadow;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-transform: uppercase;
   }
 }

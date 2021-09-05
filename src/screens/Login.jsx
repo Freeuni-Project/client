@@ -10,6 +10,12 @@ import { HandleInputs } from "../hooks/HandleInputs";
 
 const Login = () => {
   const dispatch = useDispatch();
+
+  const [requestData, setRequestData] = useState({
+    success: "",
+    loading: false,
+    error: "",
+  });
   /* states */
   const [validationError, setValidationError] = useState({
     username: "",
@@ -26,13 +32,15 @@ const Login = () => {
   const handleLogin = async () => {
     const formIsValid = handleValidation();
     if (formIsValid) {
+      setRequestData({ ...requestData, loading: true });
       try {
         const resp = await axios.post("http://localhost:5005/api/user/login", {
           username: inputValues.username,
           password: inputValues.password,
         });
-        dispatch(setToken({ token: resp.data.data.api_key, role: "member" }));
+        setRequestData({ ...requestData, loading: false, success: resp.data });
       } catch (error) {
+        setRequestData({ ...requestData, loading: false, error: error });
         console.error(error);
       }
     }
@@ -62,6 +70,20 @@ const Login = () => {
     }
     return formIsValid;
   };
+
+  if (!requestData.loading && !requestData.error) {
+    if (requestData.success.data) {
+      localStorage.setItem("token-short", requestData.success.data.api_key);
+
+      dispatch(
+        setToken({
+          token: requestData.success.data.api_key,
+        })
+      );
+    }
+  }
+
+  console.log(localStorage.getItem("token-short"));
 
   return (
     <>

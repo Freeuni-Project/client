@@ -62,9 +62,11 @@ const Main = () => {
 
       setRequestData({ ...requestData, data: pageData, loading: false });
     } catch (error) {
-      setRequestData({ ...requestData, loading: false, error: error });
+      window.location.reload();
     }
   };
+
+  console.log(localStorage.getItem("token-short"));
 
   const getAllUsers = async () => {
     try {
@@ -76,11 +78,7 @@ const Main = () => {
       });
       dispatch(setAllUsers(resp.data));
     } catch (error) {
-      setUserRequestData({
-        ...userRequestData,
-        loading: false,
-        error: error,
-      });
+      window.location.reload();
     }
   };
   useEffect(() => {

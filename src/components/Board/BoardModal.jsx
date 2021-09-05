@@ -4,10 +4,7 @@ import base from "../../axios/axiosBase";
 /* redux states */
 import { useSelector, useDispatch } from "react-redux";
 /* redux actions */
-import {
-  setBoardModalData,
-  setBoardModalShow,
-} from "../../actions/currentProjectSlice";
+import { setBoardModalShow } from "../../actions/currentProjectSlice";
 /* bootstrap elements */
 import { Modal, Button } from "react-bootstrap";
 /* hooks */
@@ -20,7 +17,7 @@ import { TicketValidation } from "../../validations/ticketValidation";
 /* reqeust */
 import { UpdateTicket } from "../../requests/UpdateTicket";
 
-const BoardModal = () => {
+const BoardModal = ({ GetProjectTickets }) => {
   const dispatch = useDispatch();
 
   const [agreeModal, setAgreeModal] = useState(false);
@@ -82,7 +79,6 @@ const BoardModal = () => {
         onClose={() => {
           setRequestData({ loading: false, error: "", success: "" });
           setAgreeModal(false);
-          window.location.reload();
         }}
       />
     );
@@ -125,7 +121,7 @@ const BoardModal = () => {
             }}
           >
             <option value="default">Choose Status</option>
-            <option value="todo">To-DO</option>
+            <option value="todo">To-Do</option>
             <option value="inProgress">In Progress</option>
             <option value="inTesting">In Testing</option>
             <option value="done">Done</option>
@@ -195,7 +191,12 @@ const BoardModal = () => {
         title="Do you realy want to edit ticket ? "
         agreeFunc={() => {
           setAgreeModal(false);
-          UpdateTicket(inputValues, setRequestData, requestData);
+          UpdateTicket(
+            inputValues,
+            setRequestData,
+            requestData,
+            GetProjectTickets
+          );
         }}
         disagreeFunc={() => {
           setAgreeModal(false);
