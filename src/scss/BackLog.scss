@@ -1,6 +1,7 @@
 .backlogcontainer {
   width: 100%;
   display: flex;
+  justify-content: space-between;
 }
 .backlogbox {
   box-shadow: $main-shadow;
@@ -11,11 +12,11 @@
   border: 1px solid rgba(0, 0, 0, 0.125);
   border-radius: 0.25rem;
   transition: all 1s ease-in-out;
+
   /* Backlog Item */
   .backlogitem {
     cursor: pointer;
     position: relative;
-    width: 100%;
     border-radius: $medium-radius;
     padding: $small-padding;
     padding-left: $medium-padding;
@@ -131,7 +132,6 @@
 
 /* backlog ticket card */
 .backlog__ticketcard {
-  width: 100%;
   margin-left: $small-margin;
   background-color: #f3f5f7;
   box-shadow: $main-shadow;

@@ -1,6 +1,4 @@
 import React, { useState, useEffect } from "react";
-/* axios base url */
-import base from "../../axios/axiosBase";
 /* redux states */
 import { useSelector, useDispatch } from "react-redux";
 /* redux actions */

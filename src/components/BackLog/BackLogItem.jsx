@@ -1,19 +1,15 @@
-import React, { useState } from "react";
+import React from "react";
 /* axios base url */
 import base from "../../axios/axiosBase";
 /* import icons */
 import { IoTrashBinSharp } from "react-icons/io5";
-/* modals */
-import AgreeModal from "../AgreeModal";
 
-const BackLogItem = ({ ticket, getProjectTickets, setTicketcard }) => {
+const BackLogItem = ({ ticket, GetProjectTickets, setTicketcard }) => {
   const { title, description, status, id } = ticket;
-  /* states */
-  const [agreeModal, setAgreeModal] = useState(false);
 
   const deleteTicket = async () => {
     const resp = await base.delete(`/ticket/${id}`);
-    getProjectTickets();
+    GetProjectTickets();
   };
 
   return (
