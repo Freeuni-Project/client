@@ -52,8 +52,8 @@ const ShowComment = ({ comment, getComments }) => {
       <div className="commentcontainer">
         <div className="commentbox">
           <div className="commenttitle">
-            {(commentData && commentData.commentOwner.fistName) || "nikoloz"}{" "}
-            {(commentData && commentData.commentOwner.lastName) || "cxvedadze"}
+            {(commentData && commentData.commentOwner.fistName) || commentData.commentOwner.fistName}{" "}
+            {(commentData && commentData.commentOwner.lastName) || commentData.commentOwner.lastName}
           </div>
           <textarea
             className="commentinput"
