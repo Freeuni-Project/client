@@ -1,0 +1,50 @@
+.statistics {
+  width: 100%;
+  display: flex;
+  justify-content: space-around;
+  box-shadow: $main-shadow;
+  border-radius: $medium-radius;
+  margin-left: $small-margin;
+  padding: $medium-padding;
+  background-color: #f3f5f7;
+  border: 1px solid rgba(0, 0, 0, 0.125);
+  border-radius: 0.25rem;
+  transition: all 1s ease-in-out;
+}
+
+.averagetime {
+  width: 20vw;
+  cursor: pointer;
+  position: relative;
+  border-radius: $medium-radius;
+  padding: $small-padding;
+  padding-left: $medium-padding;
+  padding-right: $medium-padding;
+  background-color: #fff;
+  box-shadow: $main-shadow;
+  display: flex;
+
+  align-items: center;
+  justify-content: center;
+  transition: $main-transition;
+  margin-bottom: $small-margin/1.5;
+}
+
+.averange__input {
+  width: 20vw;
+  cursor: pointer;
+  position: relative;
+  border-radius: $medium-radius;
+  padding: $small-padding;
+  padding-left: $medium-padding;
+  padding-right: $medium-padding;
+  background-color: #fff;
+  box-shadow: $main-shadow;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: $main-transition;
+  margin-bottom: $small-margin/1.5;
+  border: none;
+  outline: none;
+}

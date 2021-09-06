@@ -12,6 +12,7 @@ import SideBar from "../components/SideBar";
 import BackLog from "../components/BackLog/BackLog.jsx";
 import Board from "../components/Board/Board";
 import Loading from "../components/Loading";
+import Statistic from "../components/statistics/Statistics";
 /* modals */
 import InfoModal from "../components/InfoModal";
 import { Button } from "react-bootstrap";
@@ -77,10 +78,11 @@ const CurrentProject = ({ match }) => {
             <SideBar />
             {navControl.board && (
               <>
-                <Board />
+                <Board />/
               </>
             )}
             {navControl.backlog && <BackLog />}
+            {navControl.statistic && <Statistic id={match.params.id} />}
           </div>
         </>
       )}

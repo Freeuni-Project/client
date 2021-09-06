@@ -29,9 +29,7 @@ const BackLogItem = ({ ticket, GetProjectTickets, setTicketcard }) => {
           (status === "done" && "Done") ||
           (status === "inTesting" && "In Testing")}
       </div>
-      <div className="backlogitem__assigneeid">
-        {"N"}.{"T"}
-      </div>
+
       <div className="backlogitem__delete">
         <IoTrashBinSharp onClick={() => deleteTicket()} />
       </div>

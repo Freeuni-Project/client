@@ -4,7 +4,7 @@ const initialState = {
   registerData: {},
   currentProject: {},
   createProject: { show: false },
-  navControl: { board: false, backlog: true },
+  navControl: { board: false, backlog: true, statistic: false },
   projectEdit: { show: false, project: {} },
   allUsers: [],
   addMember: { show: false, data: {} },
@@ -21,6 +21,7 @@ const globalSlice = createSlice({
     setNavControl: (state, action) => {
       state.navControl.backlog = action.payload.backlog;
       state.navControl.board = action.payload.board;
+      state.navControl.statistic = action.payload.statistic;
     },
     setCurrentProject: (state, action) => {
       state.currentProject = action.payload;
