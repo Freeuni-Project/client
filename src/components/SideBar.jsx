@@ -4,7 +4,12 @@ import { useSelector, useDispatch } from "react-redux";
 // redux actions
 import { setNavControl } from "../actions/globalSlice";
 // react icons
-import { VscProject, VscCircuitBoard, VscServer } from "react-icons/vsc";
+import {
+  VscProject,
+  VscCircuitBoard,
+  VscServer,
+  VscGraph,
+} from "react-icons/vsc";
 
 const SideBar = () => {
   const dispatch = useDispatch();
@@ -59,7 +64,7 @@ const SideBar = () => {
           )
         }
       >
-        <VscServer color={navControl.statistic ? "#2151c5" : ""} />
+        <VscGraph color={navControl.statistic ? "#2151c5" : ""} />
         <div>Satistic</div>
       </div>
     </div>

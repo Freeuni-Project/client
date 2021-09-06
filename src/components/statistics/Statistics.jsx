@@ -8,6 +8,11 @@ import { useSelector } from "react-redux";
 const Statistic = ({ id }) => {
   /* states */
   const [choosenUser, setChoosenUser] = useState();
+  const [userTicketNums, setUserTicketNums] = useState({
+    loading: false,
+    error: "",
+    data: "",
+  });
   const [singleUserdata, setSingleUserdata] = useState({});
   const [averangeTimeData, setAverangeTimeData] = useState({
     loading: false,
@@ -56,6 +61,32 @@ const Statistic = ({ id }) => {
     } catch (error) {}
   };
 
+  const getUserTicketNums = async () => {
+    setUserTicketNums({ ...userAverageTime, loading: true });
+    try {
+      const resp = await axios.get(
+        `http://localhost:8000/statistics/api/stat/${id}/${choosenUser}/user-ticket-num`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      setUserTicketNums({
+        ...userAverageTime,
+        data: resp.data,
+        loading: false,
+      });
+    } catch (error) {
+      setUserTicketNums({
+        ...userAverageTime,
+        error: error,
+        loading: false,
+      });
+      console.error(error);
+    }
+  };
+
   useEffect(() => {
     getProjectAverangeTime();
   }, []);
@@ -63,10 +94,11 @@ const Statistic = ({ id }) => {
   useEffect(() => {
     if (choosenUser !== "choose" && choosenUser !== undefined) {
       userAverageTime();
+      getUserTicketNums();
     }
   }, [choosenUser]);
 
-  console.log(singleUserdata.data);
+  console.log(userTicketNums.data);
 
   return (
     <Card className="statistics">
@@ -107,6 +139,10 @@ const Statistic = ({ id }) => {
                     singleUserdata.data.avg_time + " " + "Minutes")}
               </>
             )}
+          </div>
+          <div className="averagetime" style={{ marginLeft: "1rem" }}>
+            {userTicketNums.data &&
+              userTicketNums.data.ticket_num + " Tickets Done"}
           </div>
         </div>
       </Card.Body>
