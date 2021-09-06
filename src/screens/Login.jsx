@@ -34,7 +34,7 @@ const Login = () => {
     if (formIsValid) {
       setRequestData({ ...requestData, loading: true });
       try {
-        const resp = await axios.post("http://localhost:5005/api/user/login", {
+        const resp = await axios.post("http://localhost:8000/auth/user/login", {
           username: inputValues.username,
           password: inputValues.password,
         });
@@ -84,6 +84,8 @@ const Login = () => {
       );
     }
   }
+
+  console.log(localStorage.getItem("user-id"));
 
   return (
     <>

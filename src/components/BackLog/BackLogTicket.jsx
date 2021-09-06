@@ -202,15 +202,6 @@ const BackLogTicket = ({ data, projectId, GetProjectTickets }) => {
           })}
         </select>
         <Card.Title className="mt-3 mb-3">Comments</Card.Title>
-        <textarea
-          style={{ marginTop: 0 }}
-          className="input"
-          placeholder="write comment"
-          name="write comment"
-          value={commentInput}
-          onChange={(e) => setCommentInput(e.target.value)}
-        />
-        <Button onClick={() => createComment()}>Comment</Button>
         {commentData.data &&
           commentData.data.map((comment) => {
             return (
@@ -221,6 +212,15 @@ const BackLogTicket = ({ data, projectId, GetProjectTickets }) => {
               />
             );
           })}
+        <textarea
+          style={{ marginTop: 0 }}
+          className="input mt-3"
+          placeholder="write comment"
+          name="write comment"
+          value={commentInput}
+          onChange={(e) => setCommentInput(e.target.value)}
+        />
+        <Button onClick={() => createComment()}>Comment</Button>
       </Card.Body>
       <div className="button__box">
         <Button onClick={() => setAgreeModal(true)}>Submit</Button>

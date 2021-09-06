@@ -33,6 +33,7 @@ const MainNavbar = () => {
               <NavDropdown.Item
                 onClick={() => {
                   dispatch(removeToken());
+                  localStorage.clear();
                   history.push("/login");
                 }}
               >

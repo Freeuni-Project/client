@@ -36,12 +36,13 @@ const Register = () => {
     const formIsValid = handleValidation();
 
     if (formIsValid) {
-      const resp = await axios.post("http://localhost:5005/api/user/create", {
+      const resp = await axios.post("http://localhost:8000/auth/user/create", {
         first_name: inputValues.firstName,
         last_name: inputValues.lastName,
         email: inputValues.email,
         username: inputValues.userName,
         password: inputValues.password,
+        is_admin: false,
       });
       if (resp.data.message === "User added") {
         dispatch(setRegisterData(resp.data));

@@ -105,9 +105,9 @@ const Main = () => {
 
     try {
       const id = Number(userId);
-      const resp = await base.post("/get-projects-by-user-id", {
-        user_id: id,
-      });
+      const resp = await base.get(
+        `/${localStorage.getItem("user-id")}/get-projects-by-user-id`
+      );
       const pageData = GetChunks(resp.data.json_list, 11);
 
       setRequestByUser({
@@ -122,6 +122,7 @@ const Main = () => {
 
   useEffect(() => {
     const userId = localStorage.getItem("user-id");
+    console.log(userId);
     setUserId(userId);
 
     const isAdmin = localStorage.getItem("user-role");

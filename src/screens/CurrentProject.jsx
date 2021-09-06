@@ -14,6 +14,7 @@ import Board from "../components/Board/Board";
 import Loading from "../components/Loading";
 /* modals */
 import InfoModal from "../components/InfoModal";
+import { Button } from "react-bootstrap";
 
 const CurrentProject = ({ match }) => {
   const dispatch = useDispatch();
@@ -74,7 +75,11 @@ const CurrentProject = ({ match }) => {
         <>
           <div className="currentproject">
             <SideBar />
-            {navControl.board && <Board />}
+            {navControl.board && (
+              <>
+                <Board />
+              </>
+            )}
             {navControl.backlog && <BackLog />}
           </div>
         </>
