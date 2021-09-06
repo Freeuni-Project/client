@@ -1,4 +1,6 @@
 import React, { useState, useEffect } from "react";
+/* axios base url */
+import base from "../../axios/axiosBase";
 /* redux hooks */
 import { useSelector } from "react-redux";
 /* bootstrap elements */
@@ -12,8 +14,14 @@ import AgreeModal from "../AgreeModal";
 import InfoModal from "../InfoModal";
 /* request */
 import { UpdateTicket } from "../../requests/UpdateTicket";
+/* component */
+import ShowComment from "../ShowComment";
 
 const BackLogTicket = ({ data, projectId, GetProjectTickets }) => {
+  const commentMock = [
+    { comment: "done this card first", id: "32132131313" },
+    { comment: "done this second time", id: "3213dsa2131313" },
+  ];
   /* states */
   const [agreeModal, setAgreeModal] = useState(false);
 
@@ -22,6 +30,14 @@ const BackLogTicket = ({ data, projectId, GetProjectTickets }) => {
     success: "",
     loading: false,
   });
+
+  const [commentData, setCommentData] = useState({
+    error: "",
+    data: "",
+    loading: false,
+  });
+
+  const [commentInput, setCommentInput] = useState("");
 
   const [inputValues, setInputValues] = useState({
     title: "",
@@ -39,6 +55,45 @@ const BackLogTicket = ({ data, projectId, GetProjectTickets }) => {
   });
   /* redux states */
   const { projectUsers } = useSelector((state) => state.current);
+  /* current user id */
+  const { userId } = useSelector((state) => state.auth);
+
+  const createComment = async () => {
+    try {
+      await base.post(`/ticket/${inputValues.ticketId}/add-comment`, {
+        user_id: userId,
+        comment: commentInput,
+      });
+      getComments();
+    } catch (error) {
+      console.error(error.message);
+    }
+    setCommentInput("");
+  };
+
+  const getComments = async () => {
+    try {
+      setCommentData({ ...commentData, loading: true });
+      const resp = await base.get(
+        `/ticket/${inputValues.ticketId}/get-comments`
+      );
+      setCommentData({
+        ...commentData,
+        loading: false,
+        data: resp.data.json_list,
+      });
+    } catch (error) {
+      setCommentData({ ...commentData, loading: false, error: error });
+      console.error(error);
+    }
+  };
+
+  useEffect(() => {
+    if (inputValues.ticketId) {
+      getComments();
+      console.log(inputValues.ticketId);
+    }
+  }, [inputValues.ticketId]);
 
   useEffect(() => {
     const { title, description, assignee_id, reporter_id, status, id } = data;
@@ -146,10 +201,31 @@ const BackLogTicket = ({ data, projectId, GetProjectTickets }) => {
             );
           })}
         </select>
+        <Card.Title className="mt-3 mb-3">Comments</Card.Title>
+        <textarea
+          style={{ marginTop: 0 }}
+          className="input"
+          placeholder="write comment"
+          name="write comment"
+          value={commentInput}
+          onChange={(e) => setCommentInput(e.target.value)}
+        />
+        <Button onClick={() => createComment()}>Comment</Button>
+        {commentData.data &&
+          commentData.data.map((comment) => {
+            return (
+              <ShowComment
+                comment={comment}
+                key={comment.id}
+                getComments={getComments}
+              />
+            );
+          })}
       </Card.Body>
       <div className="button__box">
         <Button onClick={() => setAgreeModal(true)}>Submit</Button>
       </div>
+
       <AgreeModal
         title="Do you realy want to edit ticket ? "
         agreeFunc={() => {

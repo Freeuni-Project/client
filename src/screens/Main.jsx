@@ -19,6 +19,7 @@ import RemoveMember from "../components/removeMember.jsx";
 import { useDispatch, useSelector } from "react-redux";
 /* redux actions */
 import { setAllUsers } from "../actions/globalSlice.js";
+import { setUserId } from "../actions/authSlice.js";
 
 const Main = () => {
   const dispatch = useDispatch();
@@ -32,15 +33,27 @@ const Main = () => {
     error: "",
     loading: false,
   });
+  const [requestByUser, setRequestByUser] = useState({
+    data: [],
+    error: "",
+    loading: false,
+  });
   const [userRequestData, setUserRequestData] = useState({
     data: [],
     error: "",
     loading: false,
   });
+  const { userId } = useSelector((state) => state.auth);
 
   /* pageination */
   const [active, setActive] = useState(1);
-  const pages = requestData.data.length;
+  let pages;
+
+  if (isAdmin === "true") {
+    pages = requestData.data.length;
+  } else {
+    pages = requestByUser.data.length;
+  }
   const items = [];
 
   for (let number = 1; number <= pages; number++) {
@@ -86,12 +99,44 @@ const Main = () => {
       dispatch(setAllUsers(resp.data));
     } catch (error) {}
   };
+
+  const getProjectsByUser = async () => {
+    setRequestByUser({ ...requestByUser, loading: true });
+
+    try {
+      const id = Number(userId);
+      const resp = await base.post("/get-projects-by-user-id", {
+        user_id: id,
+      });
+      const pageData = GetChunks(resp.data.json_list, 11);
+
+      setRequestByUser({
+        ...requestByUser,
+        loading: false,
+        data: pageData,
+      });
+    } catch (error) {
+      setRequestByUser({ ...requestByUser, loading: false, error: error });
+    }
+  };
+
   useEffect(() => {
-    getProjects();
-    getAllUsers();
+    const userId = localStorage.getItem("user-id");
+    setUserId(userId);
+
     const isAdmin = localStorage.getItem("user-role");
+
+    if (isAdmin == "true") {
+      getProjects();
+    }
+    if (isAdmin == "false") {
+      getAllUsers();
+    }
+    getProjectsByUser();
+
     setIsAdmin(isAdmin);
   }, []);
+  console.log(requestByUser.data);
 
   return (
     <>
@@ -106,19 +151,39 @@ const Main = () => {
             <Loading />
           ) : (
             <>
-              {requestData.data[active - 1] &&
-                requestData.data[active - 1].map((project, index) => {
-                  return (
-                    <React.Fragment key={project.id}>
-                      <ProjectListCard
-                        isAdmin={isAdmin}
-                        project={project}
-                        index={index}
-                        getProjects={getProjects}
-                      />
-                    </React.Fragment>
-                  );
-                })}
+              {isAdmin === "true" ? (
+                <>
+                  {requestData.data[active - 1] &&
+                    requestData.data[active - 1].map((project, index) => {
+                      return (
+                        <React.Fragment key={project.id}>
+                          <ProjectListCard
+                            isAdmin={isAdmin}
+                            project={project}
+                            index={index}
+                            getProjects={getProjects}
+                          />
+                        </React.Fragment>
+                      );
+                    })}
+                </>
+              ) : (
+                <>
+                  {requestByUser.data[active - 1] &&
+                    requestByUser.data[active - 1].map((project, index) => {
+                      return (
+                        <React.Fragment key={project.id}>
+                          <ProjectListCard
+                            isAdmin={isAdmin}
+                            project={project}
+                            index={index}
+                            getProjects={getProjects}
+                          />
+                        </React.Fragment>
+                      );
+                    })}
+                </>
+              )}
             </>
           )}
         </div>

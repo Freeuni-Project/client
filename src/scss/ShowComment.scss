@@ -1,0 +1,39 @@
+.commentcontainer {
+  display: flex;
+  position: relative;
+  margin-top: $small-margin;
+  .iconsircle {
+    width: 2.5rem;
+    height: 2.5rem;
+    box-shadow: $main-shadow;
+    background-color: #5244ab;
+    color: white;
+    align-items: center;
+    justify-content: center;
+    text-transform: uppercase;
+    border-radius: 100%;
+  }
+  .commentbox {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    .commentinput {
+      border: none;
+      padding: 5px;
+      border-radius: $small-radius;
+      margin-top: 3px;
+      margin-bottom: $medium-margin;
+    }
+    .commentinput:disabled {
+      background-color: white;
+    }
+  }
+  .deletecomment {
+    font-weight: bold;
+    color: red;
+    cursor: pointer;
+    position: absolute;
+    right: 0;
+    bottom: 0rem;
+  }
+}
